@@ -1,0 +1,87 @@
+.edit-btn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-body img {
+    width: 4rem;
+    aspect-ratio: 1/1;
+    border: 2px solid #000;
+    border-radius: 50%;
+}
+
+.edit-card {
+    border-radius: 20px;
+}
+
+.edit-card-text {
+    text-justify: newspaper;
+}
+
+.content2 {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 7px;
+    transition: all .3s ease;
+}
+
+.edit-card-case {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content2:hover {
+    color: white;
+    transform: scale(1.05);
+}
+
+.content2:hover a {
+    border-color: white;
+    background: white;
+}
+
+.content2-1:hover {
+    border-color: #860732;
+    background: #860732;
+}
+
+.content2 img{
+    transition: all 0.4s ease-in-out;
+}
+
+.content2:hover img{
+    border-color: #fff;
+    background-color: #fff;
+    transform: scale(1.2);
+}
+
+.content2-1:hover a {
+    color: #1DA1F2;
+}
+
+.content2:hover .btn{
+    color: #fff;
+    border-color: #fff;
+}
+
+.content2:hover .btn:hover{
+    background: #fff;
+    color: #000;
+}
+
+.edit-container5 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-card-case {
+    width: 100%;
+    max-width: 1200px;
+    /* Adjust based on your design */
+    margin: auto;
+}

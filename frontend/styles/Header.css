@@ -1,0 +1,72 @@
+.contents {
+    padding: 0;
+}
+
+.img-navbar-edit {
+    height: 6vh;
+}
+
+.bg-color {
+    background-color: #fcefbd;
+}
+
+footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    max-height: 50px;
+    font-size: small;
+    text-wrap: wrap;
+    background-color: #f0f0f0;
+    /* Adjust background color as needed */
+}
+
+.link-edit {
+    display: flex;
+    justify-content: space-between;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.edit-profile {
+    padding-left: 12px;
+}
+
+.edit-profile-img {
+    max-width: 2.7rem;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+}
+
+.dropdown-menu {
+    right: 0;
+    top: 33px;
+    display: block;
+}
+
+.edit-profile:hover .dropdown-menu {
+    display: block;
+}
+
+.edit-profile:active .dropdown-menu {
+    display: block;
+}
+
+.profile-dropdown .dropdown-menu {
+    display: none;
+    margin-top: 10px;
+    /* Adjust if needed */
+}
+
+.edit-icon {
+    transition: transform 0.3s ease-in-out;
+    text-align: center;
+}
+
+.bi-bell-fill {
+    color: rgb(255, 157, 0);
+}
+
+.edit-icon:hover{
+    transform: scale(1.2);
+}
