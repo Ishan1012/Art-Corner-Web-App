@@ -1,9 +1,17 @@
 'use client';
-import React from 'react'
+import React, { useState } from 'react'
 import '@/styles/AboutPage.css';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 
 export default function AboutPage() {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+    });
+
     const scrollToElement = (elementId) => {
         const element = document.getElementById(elementId);
 
@@ -16,6 +24,25 @@ export default function AboutPage() {
             console.error(`Element with ID "${elementId}" not found.`);
         }
     }
+
+    const handleChange = (e) => {
+        setFormData(prev => ({
+            ...prev,
+            [e.target.name]: e.target.value
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (formData.name === '' || formData.email === '' || formData.subject === '' || formData.message === '') {
+            toast.error('Please fill all the details before submitting');
+            return;
+        }
+        toast.success('Form submitted');
+        router.push('/');
+    }
+
     return (
         <div>
             <div id="header">
@@ -35,7 +62,7 @@ export default function AboutPage() {
                 <h6 className="rotate">Services</h6>
                 <h2>Services We Provide</h2>
                 <div className="services">
-                    <Link className="service" href="/" style={{textDecoration: 'none', color: '#000'}}>
+                    <Link className="service" href="/" style={{ textDecoration: 'none', color: '#000' }}>
                         <h2>01</h2>
                         <h3>Art Gallery</h3>
                         <p>
@@ -44,7 +71,7 @@ export default function AboutPage() {
                             story through vivid imagery and creativity.
                         </p>
                     </Link>
-                    <Link className="service" href="/explore" style={{textDecoration: 'none', color: '#000'}}>
+                    <Link className="service" href="/explore" style={{ textDecoration: 'none', color: '#000' }}>
                         <h2>02</h2>
                         <h3>Educational Resources</h3>
                         <p>
@@ -53,7 +80,7 @@ export default function AboutPage() {
                             your fingertips for reference anytime.
                         </p>
                     </Link>
-                    <Link className="service" href="/bookmarks" style={{textDecoration: 'none', color: '#000'}}>
+                    <Link className="service" href="/bookmarks" style={{ textDecoration: 'none', color: '#000' }}>
                         <h2>03</h2>
                         <h3>Accessibility Features</h3>
                         <p>
@@ -62,7 +89,7 @@ export default function AboutPage() {
                             showcase your work, and engage with others in the art world.
                         </p>
                     </Link>
-                    <Link className="service" href="/profile" style={{textDecoration: 'none', color: '#000'}}>
+                    <Link className="service" href="/profile" style={{ textDecoration: 'none', color: '#000' }}>
                         <h2>04</h2>
                         <h3>Artists Profiles</h3>
                         <p>
@@ -71,7 +98,7 @@ export default function AboutPage() {
                             others on our platform.
                         </p>
                     </Link>
-                    <Link className="service" href="/community" style={{textDecoration: 'none', color: '#000'}}>
+                    <Link className="service" href="/community" style={{ textDecoration: 'none', color: '#000' }}>
                         <h2>05</h2>
                         <h3>Community Forum</h3>
                         <p>
@@ -80,7 +107,7 @@ export default function AboutPage() {
                             ideas, and engage with others who share your passion.
                         </p>
                     </Link>
-                    <Link className="service" href="/news" style={{textDecoration: 'none', color: '#000'}}>
+                    <Link className="service" href="/news" style={{ textDecoration: 'none', color: '#000' }}>
                         <h2>06</h2>
                         <h3>News Section</h3>
                         <p>
@@ -95,26 +122,45 @@ export default function AboutPage() {
                 <h3 className="rotate">Contact</h3>
                 <h2>Let&apos;s Discuss Project</h2>
                 <div className="contact-details">
-                    <form formcontrolname="postForm" onSubmit={() => onSubmit()}>
+                    <form name="postForm" onSubmit={handleSubmit}>
                         <h3>Get in touch</h3>
                         <h6>Our friendly team would love to hear from you</h6>
                         <div className="name-email">
                             <div className="name-box">
                                 <label htmlFor="#">Name</label>
-                                <input type="text" formcontrolname="name" placeholder="Name" />
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Name"
+                                />
                             </div>
                             <div className="Email-box">
                                 <label htmlFor="#">Email</label>
-                                <input type="email" formcontrolname="email" placeholder="Email" />
+                                <input
+                                    type="email"
+                                    name="email"
+                                    placeholder="Email"
+                                />
                             </div>
                         </div>
                         <div className="subject">
                             <label htmlFor="#">Subject</label>
-                            <input type="text" formcontrolname="subject" placeholder="Subject" />
+                            <input
+                                type="text"
+                                name="subject"
+                                placeholder="Subject"
+                            />
                         </div>
                         <div className="Message">
                             <label htmlFor="#">Message</label>
-                            <textarea name="message" formcontrolname="message" cols="30" rows="5" placeholder="Message"></textarea>
+                            <textarea
+                                name="message"
+                                cols="30"
+                                rows="5"
+                                placeholder="Message"
+                                value={formData.message}
+                                onChange={handleChange}
+                            ></textarea>
                         </div>
                         <button className="send-edit"><a className="text-decoration-none fw-bold">Send message</a></button>
                     </form>

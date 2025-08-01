@@ -17,7 +17,7 @@ export default function ResetPasswordPage() {
         }
 
         toast.success(`Reset link sent to ${email}`);
-        setEmail('');
+        router.push('/');
     }
 
     return (

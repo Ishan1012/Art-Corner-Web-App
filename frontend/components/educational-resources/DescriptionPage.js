@@ -28,20 +28,20 @@ export default function DescriptionPage({ id }) {
             return;
         }
 
-        const next = data[(found.index+1)%data.length]._id;
-        const prevIndex = found.index-1;
+        const next = data[(found.index + 1) % data.length]._id;
+        const prevIndex = found.index - 1;
         let prev;
-        if(prevIndex<0) {
-            prev = data[data.length-1]._id;
+        if (prevIndex < 0) {
+            prev = data[data.length - 1]._id;
         }
         else {
             prev = data[prevIndex]._id;
         }
         setPrevId(prev);
         setNextId(next);
-        
+
         setShowArtifact(found);
-        setUser({ _id: '1', name: 'a' });
+        // setUser({ _id: '1', name: 'a' });
 
         const shuffled = data
             .filter(item => item._id !== id)
@@ -123,12 +123,22 @@ export default function DescriptionPage({ id }) {
         document.body.removeChild(link);
     };
 
-
-    const activeDownload = () => true;
-
     const openImage = (itemId) => {
         scrollToTop();
         router.push(`/explore/${itemId}`);
+    }
+
+    const copyToClipboard = () => {
+        const url = window.location.href;
+        navigator.clipboard.writeText(url).then(() => {
+            setIscopy(true);
+            setTimeout(() => {
+                setIscopy(false);
+            }, 3000);
+
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
     }
 
     return (
@@ -158,7 +168,7 @@ export default function DescriptionPage({ id }) {
                         <i className={`bi fs-3 ${showArtifact.like.some(item => item._id === user._id) ? 'bi-heart-fill edit-heart' : 'bi-heart'}`}></i>
                     </div >
                     {
-                        activeDownload() ? (
+                        user ? (
                             <div onClick={() => downloadImage()} download={showArtifact.title} className="btn" > <i className="bi bi-download fs-3"></i></div>
                         ) : (
                             <Link href="/login" className="btn" ><i className="bi bi-download fs-3"></i></Link>
