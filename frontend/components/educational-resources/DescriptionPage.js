@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import '@/styles/DescriptionPage.css';
 import { LoadingPage } from '../accessibility-features/loading-page/LoadingPage';
 import { useRouter } from 'next/navigation';
+import ErrorPage from '../accessibility-features/error-page/ErrorPage';
 
 export default function DescriptionPage({ id }) {
     const [user, setUser] = useState(null);
@@ -11,6 +12,7 @@ export default function DescriptionPage({ id }) {
     const [showArtifact, setShowArtifact] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [iscopy, setIscopy] = useState(false);
+    const [unavail, setUnavail] = useState(false);
 
     const router = useRouter();
     const isActive = true;
@@ -19,6 +21,10 @@ export default function DescriptionPage({ id }) {
     useEffect(() => {
         const data = getAll();
         const found = data.find((item) => item._id === id);
+        if(!found) {
+            setUnavail(true);
+            return;
+        }
         setShowArtifact(found);
         setUser({ _id: '1', name: 'a' });
 
@@ -29,6 +35,10 @@ export default function DescriptionPage({ id }) {
         setRecommendList(shuffled.slice(0, 8));
 
     }, []);
+
+    if(unavail) {
+        return <ErrorPage />;
+    }
 
     if (!showArtifact && isLoading) {
         return <LoadingPage />;

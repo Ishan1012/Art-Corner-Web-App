@@ -4,15 +4,24 @@ import getAll from '@/services/CommunityService';
 import React, { useEffect, useState } from 'react'
 import '@/styles/CommunityDescriptionPage.css';
 import Link from 'next/link';
+import ErrorPage from '@/components/accessibility-features/error-page/ErrorPage';
 
 export default function CommunityDescriptionPage({ id }) {
     const [community, setCommunity] = useState([]);
+    const [unavail, setUnavail] = useState(false);
 
     useEffect(() => {
         const data = getAll();
         const match = data.find((item) => item._id === id);
+        if(!match) {
+            setUnavail(true);
+        }
         setCommunity(match);
     }, []);
+
+    if(unavail) {
+        return <ErrorPage />;
+    }
 
     if(!community) {
         return <LoadingPage />;

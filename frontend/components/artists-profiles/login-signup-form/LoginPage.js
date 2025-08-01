@@ -3,9 +3,11 @@ import React, { useState } from 'react'
 import '@/styles/LoginPage.css';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
     const [showLogin, setShowLogin] = useState(true);
+    const router = useRouter();
     const [isVisiblePassword, setIsVisiblePassword] = useState(false);
     const [isVisiblePassword2, setIsVisiblePassword2] = useState(false);
     const [isVisiblePassword3, setIsVisiblePassword3] = useState(false);
@@ -36,6 +38,8 @@ export default function LoginPage() {
             return;
         }
         toast.success('Form submitted');
+        router.push('/profile');
+        // router.push('/');
     }
 
     return (
