@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { addBookmark, getAllBookmarks, removeBookmark } from '@/services/BookmarksService';
 import { LoadingPage } from '@/components/accessibility-features/loading-page/LoadingPage';
 
-export default function ExplorePage() {
+export default function SearchPage({ query }) {
     const [artifacts, setArtifacts] = useState([]);
     const [bookmarks, setBookmarks] = useState([]);
     const router = useRouter();
@@ -16,7 +16,8 @@ export default function ExplorePage() {
             const data2 = getAllBookmarks();
             setBookmarks(data2);
 
-            const data = getAll();
+            const data = searchArtifacts(query);
+            console.log(data);
             setBookmarksList(data, data2);
             setArtifacts(data);
         }

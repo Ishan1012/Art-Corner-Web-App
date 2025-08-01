@@ -2,13 +2,20 @@
 import React, { useState } from 'react';
 import '@/styles/Header.css';
 import Link from 'next/link';
+import { searchArtifacts, setArtifacts } from '@/services/ArtifactsService';
+import { useRouter } from 'next/navigation';
 
 export function Header({ open }) {
     const [search, setSearch] = useState('');
     const [user, setUser] = useState(null);
+    const router = useRouter();
 
     const handleSearch = (e) => {
         e.preventDefault();
+
+        if(search !== '') {
+            router.push(`/search/${search}`);
+        }
     };
 
     const logout = (e) => {

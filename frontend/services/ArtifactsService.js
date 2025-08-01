@@ -1205,8 +1205,24 @@ export default function getAll() {
   return artifacts;
 }
 
+export function setArtifacts(artifactsList) {
+  return artifactsList;
+}
+
 export function searchArtifacts(query) {
-  
+  query = query.toLowerCase();
+  const results = [];
+
+  artifacts.forEach(item => {
+    if (item.title.toLowerCase().includes(query)) {
+      results.push(item);
+    }
+    else if (item.tags.some(it => it.toLowerCase().includes(query))) {
+      results.push(item);
+    }
+  })
+
+  return results;
 }
 
 export function addLike(itemId, user) {
