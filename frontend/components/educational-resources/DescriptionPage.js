@@ -10,33 +10,48 @@ export default function DescriptionPage({ id }) {
     const [user, setUser] = useState(null);
     const [recommendList, setRecommendList] = useState([]);
     const [showArtifact, setShowArtifact] = useState(null);
+    const [nextId, setNextId] = useState(null);
+    const [prevId, setPrevId] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [iscopy, setIscopy] = useState(false);
     const [unavail, setUnavail] = useState(false);
 
     const router = useRouter();
     const isActive = true;
-    const isFading = false;
+    let isFading = false;
 
     useEffect(() => {
         const data = getAll();
         const found = data.find((item) => item._id === id);
-        if(!found) {
+        if (!found) {
             setUnavail(true);
             return;
         }
+
+        const next = data[(found.index+1)%data.length]._id;
+        const prevIndex = found.index-1;
+        let prev;
+        if(prevIndex<0) {
+            prev = data[data.length-1]._id;
+        }
+        else {
+            prev = data[prevIndex]._id;
+        }
+        setPrevId(prev);
+        setNextId(next);
+        
         setShowArtifact(found);
         setUser({ _id: '1', name: 'a' });
 
         const shuffled = data
-            .filter(item => item.id !== id)
+            .filter(item => item._id !== id)
             .sort(() => Math.random() - 0.5);
 
         setRecommendList(shuffled.slice(0, 8));
 
     }, []);
 
-    if(unavail) {
+    if (unavail) {
         return <ErrorPage />;
     }
 
@@ -72,6 +87,31 @@ export default function DescriptionPage({ id }) {
             behavior: 'smooth'
         });
     }
+
+    const moveBack = () => {
+        applyFadeEffect(() => {
+            router.push(`/explore/${prevId}`);
+        })
+    };
+
+    const moveNext = () => {
+        applyFadeEffect(() => {
+            router.push(`/explore/${nextId}`);
+        })
+    };
+
+    const applyFadeEffect = (action) => {
+        isFading = true;
+
+        setTimeout(() => {
+            action();
+
+            setTimeout(() => {
+                isFading = false;
+            }, 50); // Short delay to re-trigger CSS transition
+        }, 500); // Match delay with CSS transition duration
+    };
+
 
 
     const downloadImage = () => {
