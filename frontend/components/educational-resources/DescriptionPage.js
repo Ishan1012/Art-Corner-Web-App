@@ -1,4 +1,4 @@
-import getAll, { addLike, removeLike } from '@/services/ArtifactsService';
+import getAll, { addLike, getArtifactById, removeLike } from '@/services/ArtifactsService';
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import '@/styles/DescriptionPage.css';
@@ -21,35 +21,42 @@ export default function DescriptionPage({ id }) {
     let isFading = false;
 
     useEffect(() => {
-        const data = getAll();
-        const found = data.find((item) => item._id === id);
-        if (!found) {
-            setUnavail(true);
-            return;
-        }
+        const fetchData = async () => {
+            try {
+                const data = await getAll();
+                const found = await getArtifactById(id);
 
-        const next = data[(found.index + 1) % data.length]._id;
-        const prevIndex = found.index - 1;
-        let prev;
-        if (prevIndex < 0) {
-            prev = data[data.length - 1]._id;
-        }
-        else {
-            prev = data[prevIndex]._id;
-        }
-        setPrevId(prev);
-        setNextId(next);
+                if (!found || !found._id) {
+                    setUnavail(true);
+                    return;
+                }
 
-        setShowArtifact(found);
-        // setUser({ _id: '1', name: 'a' });
+                const next = data[(found.index + 1) % data.length]._id;
+                const prevIndex = found.index - 1;
+                const prev = prevIndex < 0
+                    ? data[data.length - 1]._id
+                    : data[prevIndex]._id;
 
-        const shuffled = data
-            .filter(item => item._id !== id)
-            .sort(() => Math.random() - 0.5);
+                setPrevId(prev);
+                setNextId(next);
+                setShowArtifact(found);
+                setUser({ _id: '123', })
 
-        setRecommendList(shuffled.slice(0, 8));
+                const shuffled = data
+                    .filter(item => item._id !== id)
+                    .sort(() => Math.random() - 0.5);
 
-    }, []);
+                setRecommendList(shuffled.slice(0, 8));
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                setUnavail(true);
+            }
+        };
+
+        fetchData();
+    }, [id]);
+
+
 
     if (unavail) {
         return <ErrorPage />;

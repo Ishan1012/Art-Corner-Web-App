@@ -12,13 +12,15 @@ export default function SearchPage({ query }) {
     const router = useRouter();
 
     useEffect(() => {
-        const loadData = () => {
+        const loadData = async () => {
             const data2 = getAllBookmarks();
             setBookmarks(data2);
 
-            const data = searchArtifacts(query);
-            console.log(data);
-            setBookmarksList(data, data2);
+            const data = await searchArtifacts(query);
+            data.forEach((item, index) => {
+                item.index = index;
+                item.bookmark = data2.some(bookmark => bookmark._id === item._id);
+            });
             setArtifacts(data);
         }
 
@@ -27,14 +29,6 @@ export default function SearchPage({ query }) {
 
     if (!artifacts || !bookmarks) {
         return <LoadingPage />;
-    }
-
-    const setBookmarksList = (list1, list2) => {
-        list1.forEach(element => {
-            if (list2.some(item => item._id === element._id)) {
-                element.bookmark = true;
-            }
-        });
     }
 
     const readMore = (item) => {
