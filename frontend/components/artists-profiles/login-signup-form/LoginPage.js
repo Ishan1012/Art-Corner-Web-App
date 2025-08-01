@@ -2,15 +2,40 @@
 import React, { useState } from 'react'
 import '@/styles/LoginPage.css';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 
 export default function LoginPage() {
-    const [showLogin, setShowLogin] = useState(false);
+    const [showLogin, setShowLogin] = useState(true);
     const [isVisiblePassword, setIsVisiblePassword] = useState(false);
     const [isVisiblePassword2, setIsVisiblePassword2] = useState(false);
     const [isVisiblePassword3, setIsVisiblePassword3] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
 
-    const toggleForm = () => {
-        return "";
+    const handleChange = (e) => {
+        setFormData(prev => ({
+            ...prev,
+            [e.target.name]: e.target.value
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if(!showLogin && (formData.name === '' || formData.email === '' || formData.password === '' || formData.confirmPassword === '')) {
+            toast.error('Please fill all the details before submitting');
+            return;
+        }
+        
+        if(showLogin && (formData.email === '' || formData.password === '')) {
+            toast.error('Please fill all the details before submitting');
+            return;
+        }
+        toast.success('Form submitted');
     }
 
     return (
@@ -35,7 +60,7 @@ export default function LoginPage() {
                     </div>
 
                     {/* Login and Signup Forms */}
-                    <form formcontrolname={showLogin ? 'loginForm' : 'signupForm'} onSubmit={() => submit()}>
+                    <form name='resetForm' onSubmit={handleSubmit}>
                         <div className="form-content">
                             {/* Login Form  */}
                             <div className="login-form">
@@ -43,11 +68,23 @@ export default function LoginPage() {
                                 <div className="input-boxes">
                                     <div className="input-box">
                                         <i className="bi bi-envelope-at-fill"></i>
-                                        <input type="text" formcontrolname="email" placeholder="Enter Your E-mail" />
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            placeholder="Enter Your E-mail"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                        />
                                     </div>
                                     <div className="input-box">
                                         <i className="bi bi-key-fill"></i>
-                                        <input type={isVisiblePassword ? "password" : "text"} formcontrolname="password" placeholder="Enter Your Password" />
+                                        <input
+                                            type={isVisiblePassword ? "text" : "password"}
+                                            name="password"
+                                            placeholder="Enter Your Password"
+                                            value={formData.password}
+                                            onChange={handleChange}
+                                        />
                                         <i
                                             className={`bi ${isVisiblePassword ? "bi-eye-slash-fill" : "bi-eye-fill"} position-absolute`}
                                             style={{
@@ -56,6 +93,7 @@ export default function LoginPage() {
                                                 transform: "translateY(-50%)",
                                                 cursor: "pointer"
                                             }}
+                                            value={FormData.name}
                                             onClick={() => setIsVisiblePassword(!isVisiblePassword)}
                                             title={isVisiblePassword ? "Hide Password" : "Show Password"}
                                         ></i>
@@ -64,7 +102,7 @@ export default function LoginPage() {
                                     <div className="button2 input-box">
                                         <input type="submit" value="Submit" />
                                     </div>
-                                    <div className="text sign-up-text">Don&apos;t have an account? <label onClick={() => toggleForm()}
+                                    <div className="text sign-up-text">Don&apos;t have an account? <label onClick={() => setShowLogin(false)}
                                         htmlFor="flip">Create Account</label></div>
                                 </div>
                             </div>
@@ -75,15 +113,33 @@ export default function LoginPage() {
                                 <div className="input-boxes">
                                     <div className="input-box">
                                         <i className="bi bi-person-fill"></i>
-                                        <input type="text" formcontrolname="name" placeholder="Enter Your Name" />
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            placeholder="Enter Your Name"
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                        />
                                     </div>
                                     <div className="input-box">
                                         <i className="bi bi-envelope-at-fill"></i>
-                                        <input type="text" formcontrolname="email" placeholder="Enter Your E-mail" />
+                                        <input
+                                            type="text"
+                                            name="email"
+                                            placeholder="Enter Your E-mail"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                        />
                                     </div>
                                     <div className="input-box">
                                         <i className="bi bi-key-fill"></i>
-                                        <input type={isVisiblePassword2 ? "password" : "text"} formcontrolname="password" placeholder="Enter Your Password" />
+                                        <input
+                                            type={isVisiblePassword2 ? "text" : "password"}
+                                            name="password"
+                                            placeholder="Enter Your Password"
+                                            value={formData.password}
+                                            onChange={handleChange}
+                                        />
                                         <i
                                             className={`bi ${isVisiblePassword2 ? "bi-eye-slash-fill" : "bi-eye-fill"} position-absolute`}
                                             style={{
@@ -97,7 +153,13 @@ export default function LoginPage() {
                                     </div>
                                     <div className="input-box">
                                         <i className="bi bi-shield-lock-fill"></i>
-                                        <input type={isVisiblePassword3 ? "password" : "text"} formcontrolname="confirmPassword" placeholder="Confirm Your Password" />
+                                        <input
+                                            type={isVisiblePassword3 ? "text" : "password"}
+                                            name="confirmPassword"
+                                            placeholder="Confirm Your Password"
+                                            value={formData.confirmPassword}
+                                            onChange={handleChange}
+                                        />
                                         <i
                                             className={`bi ${isVisiblePassword3 ? "bi-eye-slash-fill" : "bi-eye-fill"} position-absolute`}
                                             style={{
@@ -112,7 +174,7 @@ export default function LoginPage() {
                                     <div className="button2 input-box">
                                         <input type="submit" value="Submit" />
                                     </div>
-                                    <div className="text sign-up-text">Already have an account? <label onClick={() => toggleForm()}
+                                    <div className="text sign-up-text">Already have an account? <label onClick={() => setShowLogin(true)}
                                         htmlFor="flip">Login Now</label>
                                     </div>
                                 </div>

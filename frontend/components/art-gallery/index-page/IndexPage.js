@@ -35,7 +35,7 @@ export default function IndexPage() {
                                 <button className="btncontact" onClick={redirect}>Explore</button>
                         }
                         <div className="social-icons mb-2">
-                            <Link href="https://github.com/Ishan1012/The-Art-Corner-Web-Application/tree/main" target="_blank"><i
+                            <Link href="https://github.com/Ishan1012/Art-Corner-Web-App/tree/main/frontend" target="_blank"><i
                                 className="bi bi-github"></i></Link>
                             <Link href="https://www.instagram.com/" target="_blank"><i className="bi bi-instagram"></i></Link>
                             <Link href="https://twitter.com/?lang=en" target="_blank"><i className="bi bi-twitter-x"></i></Link>

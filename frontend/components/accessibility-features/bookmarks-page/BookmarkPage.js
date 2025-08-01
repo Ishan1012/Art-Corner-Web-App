@@ -79,7 +79,7 @@ export default function BookmarkPage() {
                                         bookmarks.map((item, index) => (
                                             <div key={index}
                                                 className="col-xl-3 col-lg-4 col-md-5 col-sm-7 col-auto">
-                                                <div className="card text-center" style={{ width: 300, overflow: 'hidden' }}>
+                                                <div className="card text-center" style={{ width: 280, overflow: 'hidden' }}>
                                                     <img src={item.img} className="card-img-top img-fit" alt="Image" onClick={() => readMore(item)} />
                                                     <div className="card-body edit-card-body">
                                                         <h5 className="card-title">{item.title}</h5>

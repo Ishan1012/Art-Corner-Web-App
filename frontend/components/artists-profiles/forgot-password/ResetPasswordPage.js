@@ -2,13 +2,22 @@
 import React, { useState } from 'react'
 import '@/styles/LoginPage.css';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 export default function ResetPasswordPage() {
-    const [resetForm, setResetForm] = useState(false);
+    const [email, setEmail] = useState('');
     const router = useRouter();
 
-    const submit = () => {
-        router.push('/');
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (!email) {
+            toast.error('Please enter your email.');
+            return;
+        }
+
+        toast.success(`Reset link sent to ${email}`);
+        setEmail('');
     }
 
     return (
@@ -33,7 +42,7 @@ export default function ResetPasswordPage() {
                     </div>
 
                     {/* Login and Signup Forms */}
-                    <form formcontrolname='resetForm' onSubmit={() => submit()} style={{height: 400}}>
+                    <form onSubmit={handleSubmit} style={{ height: 400 }}>
                         <div className="form-content">
                             {/* Login Form  */}
                             <div className="login-form">
@@ -41,7 +50,13 @@ export default function ResetPasswordPage() {
                                 <div className="input-boxes">
                                     <div className="input-box">
                                         <i className="bi bi-envelope-at-fill"></i>
-                                        <input type="text" formcontrolname="email" placeholder="Enter Your E-mail" />
+                                        <input
+                                            type="email"
+                                            name='email'
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            placeholder="Enter Your E-mail"
+                                        />
                                     </div>
                                     <div className="button2 input-box">
                                         <input type="submit" value="Submit" />
@@ -51,7 +66,6 @@ export default function ResetPasswordPage() {
 
                             {/* Signup Form  */}
                             <div className="signup-form">
-                                <div className="title">Sign up</div>
                             </div>
                         </div>
                     </form>
