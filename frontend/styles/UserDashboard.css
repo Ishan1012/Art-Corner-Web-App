@@ -1,0 +1,52 @@
+.edit-container-user {
+    padding-top: 50px;
+    min-height: 50vh;
+}
+
+.img-container-user img {
+    width: 30vh;
+    aspect-ratio: 1/1;
+    border: 10px solid #333;
+    border-radius: 50%;
+}
+
+.edit-text2 {
+    padding-top: 20px;
+    font-size: 2em;
+}
+
+.card-user {
+    border: 1px solid #8777;
+}
+
+.card-user textarea:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.card-user input[type="file"] {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.card-user form button {
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+}
+
+.card-user form button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.edit-login2{
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.edit-title2{
+    padding-left: 15px;
+    padding-right: 3px;
+    color: #333;
+}

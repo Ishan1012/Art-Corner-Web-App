@@ -1,3 +1,4 @@
+import UserDashboard from '@/components/artists-profiles/user-login-dashboard/generate-image-dashboard/UserDashboard'
 import { Header } from '@/components/Header'
 import React from 'react'
 
@@ -6,7 +7,7 @@ export default function Profile() {
         <div>
             <Header />
             <div style={{ marginTop: 60 }}>
-                
+                <UserDashboard />
             </div>
         </div>
     )

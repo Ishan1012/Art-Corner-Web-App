@@ -116,12 +116,12 @@ export function getAllUsers(adminId, adminPass) {
 }
 
 export function getUser(userForm) {
-    const [email, password] = [userForm.email, userForm.password];
+    const [userId, password] = [userForm._id, userForm.password];
 
-    if(!userForm.email || !userForm.password) {
-        toast.error('Error is receiving the user values');
+    if(!userId || !password) {
+        toast.error('Error in receiving the user values');
         return;
     }
     
-    return users.find(item => item.email === email && item.password === password);
+    return users.find((item) => item._id === userId && item.password === password) || null;
 }
