@@ -64,7 +64,7 @@ export default function LoginPage() {
                                     <div className="button2 input-box">
                                         <input type="submit" value="Submit" />
                                     </div>
-                                    <div className="text sign-up-text">Don't have an account? <label onClick={() => toggleForm()}
+                                    <div className="text sign-up-text">Don&apos;t have an account? <label onClick={() => toggleForm()}
                                         htmlFor="flip">Create Account</label></div>
                                 </div>
                             </div>

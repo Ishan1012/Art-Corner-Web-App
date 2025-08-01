@@ -65,9 +65,9 @@ export default function IndexPage() {
                                     <h3 className="title-box-name">Highlight Masterpieces in Every Category</h3>
                                     <br/>
                                 </div>
-                                <p className="text title-box-text">Celebrate the best of each category by featuring a "Top Pick" or
-                                    "Featured Artwork" that stands out. Display a thumbnail of the artwork alongside the
-                                    artist's name to give credit and inspire curiosity. This not only draws attention to
+                                <p className="text title-box-text">Celebrate the best of each category by featuring a &ldquo;Top Pick&rdquo; or
+                                    &ldquo;Featured Artwork&rdquo; that stands out. Display a thumbnail of the artwork alongside the
+                                    artist&apos;s name to give credit and inspire curiosity. This not only draws attention to
                                     exceptional talent but also adds a personal touch to the browsing experience. Such
                                     highlights encourage visitors to explore deeper and appreciate the diversity within each art
                                     form.</p>

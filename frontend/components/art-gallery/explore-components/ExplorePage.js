@@ -4,6 +4,7 @@ import '@/styles/ExplorePage.css';
 import getAll from '@/services/ArtifactsService';
 import { useRouter } from 'next/navigation';
 import { addBookmark, getAllBookmarks, removeBookmark } from '@/services/BookmarksService';
+import { LoadingPage } from '@/components/accessibility-features/loading-page/LoadingPage';
 
 export default function ExplorePage() {
     const [artifacts, setArtifacts] = useState([]);
