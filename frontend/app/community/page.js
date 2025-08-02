@@ -5,7 +5,7 @@ import React from 'react'
 export default function Community() {
   return (
     <div>
-        <Header open={4} />
+        <Header open={5} />
         <div style={{marginTop: 60}}>
             <CommunityPage />
         </div>

@@ -9,7 +9,7 @@ export default function CommunityDescription() {
     const id = params.id;
     return (
         <div>
-            <Header open={4} />
+            <Header open={5} />
             <div style={{ paddingTop: 60 }}>
                 <CommunityDescriptionPage id={id} />
             </div>

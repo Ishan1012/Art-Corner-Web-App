@@ -5,7 +5,7 @@ import React from 'react'
 export default function About() {
   return (
     <div>
-        <Header open={5} />
+        <Header open={6} />
         <div style={{marginTop: 60}}>
             <AboutPage />
         </div>

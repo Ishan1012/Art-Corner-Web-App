@@ -10,7 +10,7 @@ export default function Search() {
 
     return (
         <div>
-            <Header />
+            <Header open={2} />
             <div style={{ marginTop: 60 }}>
                 <SearchPage query={query} />
             </div>
