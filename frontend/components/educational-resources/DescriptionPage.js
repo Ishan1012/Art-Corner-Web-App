@@ -47,8 +47,7 @@ export default function DescriptionPage({ id }) {
                 setPrevId(prev);
                 setNextId(next);
                 setShowArtifact(found);
-
-                setUser({ id: '123', })
+                setUser({ id: 123, });
 
                 const shuffled = data
                     .filter(item => item.id !== id)
@@ -123,20 +122,25 @@ export default function DescriptionPage({ id }) {
 
             setTimeout(() => {
                 isFading = false;
-            }, 50); // Short delay to re-trigger CSS transition
-        }, 500); // Match delay with CSS transition duration
+            }, 50);
+        }, 500);
     };
-
-
-
+    
     const downloadImage = () => {
+        if (!showArtifact?.img) return;
+
+        const imagePath = showArtifact.img.startsWith('/')
+            ? showArtifact.img
+            : `/${showArtifact.img}`;
+
         const link = document.createElement('a');
-        link.href = `/${showArtifact.img}`;
-        link.download = showArtifact.title || 'download';
+        link.href = imagePath;
+        link.download = showArtifact.title?.replace(/\s+/g, '_') || 'download';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     };
+
 
     const openImage = (itemId) => {
         scrollToTop();
