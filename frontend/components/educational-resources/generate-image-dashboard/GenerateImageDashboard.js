@@ -228,7 +228,7 @@ const AIImageGenerator = () => {
             {generatedImage && (
               <div className="bg-light border rounded p-3 mt-3">
                 <h5 className="mb-2">Prompt used:</h5>
-                <p className="fst-italic text-muted">"{generatedImage.prompt}"</p>
+                <p className="fst-italic text-muted">&ldquo;{generatedImage.prompt}&rdquo;</p>
                 <p className="text-muted small mb-0">
                   Generated on {new Date(generatedImage.timestamp).toLocaleString()}
                 </p>
