@@ -24,7 +24,7 @@ export function addBookmark(bookmark) {
 
 export function removeBookmark(bookmarkId) {
     const bookmarks = getStoredBookmarks();
-    const filtered = bookmarks.filter(b => b._id !== bookmarkId);
+    const filtered = bookmarks.filter(b => b.id !== bookmarkId);
     saveBookmarks(filtered);
     return true;
 }

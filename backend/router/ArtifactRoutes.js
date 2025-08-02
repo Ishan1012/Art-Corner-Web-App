@@ -3,8 +3,10 @@ const router = express.Router();
 const Artifact = require('../model/Artifact');
 
 router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+    
     try {
-        const artifact = await Artifact.findOne({ id: req.params.id });
+        const artifact = await Artifact.findOne({ id });
         if (!artifact) {
             return res.status(404).json({
                 message: 'Artifact not found'

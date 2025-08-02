@@ -19,7 +19,7 @@ export default function ExplorePage() {
             const data = await getAll();
             data.forEach((item, index) => {
                 item.index = index;
-                item.bookmark = data2.some(bookmark => bookmark._id === item._id);
+                item.bookmark = data2.some(bookmark => bookmark.id === item.id);
             });
             setArtifacts(data);
         }
@@ -36,7 +36,7 @@ export default function ExplorePage() {
     }
 
     const toggleBookmark = (item) => {
-        const exists = bookmarks.some(bookmark => bookmark._id === item._id);
+        const exists = bookmarks.some(bookmark => bookmark.id === item.id);
 
         if (!exists) {
             item.bookmark = true;
@@ -45,14 +45,14 @@ export default function ExplorePage() {
             const updatedBookmarks = getAllBookmarks();
             setBookmarks(updatedBookmarks);
         } else {
-            removeBookmark(item._id);
+            removeBookmark(item.id);
 
             const updatedBookmarks = getAllBookmarks();
             setBookmarks(updatedBookmarks);
         }
 
         const updatedArtifacts = artifacts.map(artifact => {
-            if (artifact._id === item._id) {
+            if (artifact.id === item.id) {
                 return { ...artifact, bookmark: !exists };
             }
             return artifact;

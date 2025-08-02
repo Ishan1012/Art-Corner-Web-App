@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 
 const users = [
     {
-        "_id": "67385106067a6f93f20d8643",
+        "id": "67385106067a6f93f20d8643",
         "username": "Kartik Kushwaha",
         "email": "kartikkushwaha@gmail.com",
         "password": "$2a$10$1eogyG5R2s17XLRnoQMDMObi4Z9SILLrMHRXLG78zvzIsxyB3F.Aq",
@@ -15,7 +15,7 @@ const users = [
         "id": "67385106067a6f93f20d8643"
     },
     {
-        "_id": "673ae6ef03ba261cdd7171a8",
+        "id": "673ae6ef03ba261cdd7171a8",
         "username": "Hridayesh Ojha",
         "email": "hridayeshojha@gmail.com",
         "password": "$2a$10$4DtvL.lOl46xCtsbJwV4lOthalYkLex6r.zRFSMg2kjoMSOdv/LrK",
@@ -28,7 +28,7 @@ const users = [
         "id": "673ae6ef03ba261cdd7171a8"
     },
     {
-        "_id": "674ae3212da3e0c81c5122e0",
+        "id": "674ae3212da3e0c81c5122e0",
         "username": "Admin",
         "email": "admin@artcorner.com",
         "password": "$2a$10$/DIkAZIHZuHDUJJtkIqIKOCpqrBiXenQhz5/V2xzskURzeEktXNhy",
@@ -40,7 +40,7 @@ const users = [
         "id": "674ae3212da3e0c81c5122e0"
     },
     {
-        "_id": "67385177067a6f93f20d8653",
+        "id": "67385177067a6f93f20d8653",
         "username": "Ishan Dwivedi",
         "email": "ishandwivedi@gmail.com",
         "password": "$2a$10$qk8kbiIj85nI1APrkDxzge7i58loHpMwc2uP8PFKItKycmF7XARwi",
@@ -53,7 +53,7 @@ const users = [
         "id": "67385177067a6f93f20d8653"
     },
     {
-        "_id": "67385138067a6f93f20d8649",
+        "id": "67385138067a6f93f20d8649",
         "username": "Kaushiki Jaiswal",
         "email": "kaushikijaiswal@gmail.com",
         "password": "$2a$10$mQVMXFOanJ6k9haOf3mJEeVCzPeuFA1Whp.jL0YNesFDI8OIsfbrK",
@@ -66,7 +66,7 @@ const users = [
         "id": "67385138067a6f93f20d8649"
     },
     {
-        "_id": "6762f259dfd43955398bec8a",
+        "id": "6762f259dfd43955398bec8a",
         "username": "Shakti Vardhan Singh",
         "email": "shakti1012@gmail.com",
         "password": "$2a$10$hjeuzm1IxJPPUiO.7MsrhOjtCEN/8mu08QRW8td6ix905GOOKSTWe",
@@ -79,7 +79,7 @@ const users = [
         "id": "6762f259dfd43955398bec8a"
     },
     {
-        "_id": "677662b1b12fd534933c8279",
+        "id": "677662b1b12fd534933c8279",
         "username": "Aditi Dwivedi",
         "email": "aditidwivedi@gmail.com",
         "password": "$2a$10$0Fu/Qi28qmli5R4HgjDWyeyaCNCLkwbpH1eK3Uqkkvzy1HYXN4JOy",
@@ -92,7 +92,7 @@ const users = [
         "id": "677662b1b12fd534933c8279"
     },
     {
-        "_id": "6873ce2492f6af7e3bf52464",
+        "id": "6873ce2492f6af7e3bf52464",
         "username": "Divyanshu Kumar ",
         "email": "technicaltws2006@gmail.com",
         "password": "$2a$10$RWaZ5D4aOKskTaUYi47nauSTyKds90LxZRVKgK1vHpUjUBXwVtR5a",
@@ -107,7 +107,7 @@ const users = [
 ];
 
 export function getAllUsers(adminId, adminPass) {
-    const getUser = users.find(item => item._id === adminId && item.password === adminPass);
+    const getUser = users.find(item => item.id === adminId && item.password === adminPass);
 
     if (!getUser) {
         toast.error('User does not exist');
@@ -123,12 +123,12 @@ export function getAllUsers(adminId, adminPass) {
 }
 
 export function getUser(userForm) {
-    const [userId, password] = [userForm._id, userForm.password];
+    const [userId, password] = [userForm.id, userForm.password];
 
     if (!userId || !password) {
         toast.error('Error in receiving the user values');
         return;
     }
 
-    return users.find((item) => item._id === userId && item.password === password) || null;
+    return users.find((item) => item.id === userId && item.password === password) || null;
 }

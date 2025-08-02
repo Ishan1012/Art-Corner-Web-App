@@ -14,7 +14,7 @@ export default function UserDashboard() {
 
     useEffect(() => {
         const data = getUser({
-            _id: "673ae6ef03ba261cdd7171a8",
+            id: "673ae6ef03ba261cdd7171a8",
             password: "$2a$10$4DtvL.lOl46xCtsbJwV4lOthalYkLex6r.zRFSMg2kjoMSOdv/LrK"
         });
 

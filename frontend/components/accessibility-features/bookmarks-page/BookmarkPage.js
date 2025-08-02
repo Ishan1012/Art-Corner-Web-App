@@ -28,7 +28,7 @@ export default function BookmarkPage() {
 
 
     const toggleBookmark = (item) => {
-        const exists = bookmarks.some(bookmark => bookmark._id === item._id);
+        const exists = bookmarks.some(bookmark => bookmark.id === item.id);
 
         if (!exists) {
             addBookmark(item);
@@ -36,7 +36,7 @@ export default function BookmarkPage() {
             const updatedBookmarks = getAllBookmarks();
             setBookmarks(updatedBookmarks);
         } else {
-            removeBookmark(item._id);
+            removeBookmark(item.id);
 
             const updatedBookmarks = getAllBookmarks();
             setBookmarks(updatedBookmarks);
@@ -44,7 +44,7 @@ export default function BookmarkPage() {
     };
 
     const readMore = (item) => {
-        router.push('/explore/'+item._id);
+        router.push('/explore/'+item.id);
     }
 
     return (
@@ -84,7 +84,7 @@ export default function BookmarkPage() {
                                                     <div className="card-body edit-card-body">
                                                         <h5 className="card-title">{item.title}</h5>
                                                         <div className="btn-styles text-end">
-                                                            <Link className="btn btn-outline-primary" href={`/explore/${item._id}`}>Preview</Link>
+                                                            <Link className="btn btn-outline-primary" href={`/explore/${item.id}`}>Preview</Link>
                                                             {
                                                                 item.bookmark ?
                                                                     (

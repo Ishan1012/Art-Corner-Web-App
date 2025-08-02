@@ -15,13 +15,22 @@ export default async function getAll() {
 }
 
 export async function getArtifactById(id) {
-  const response = await fetch(ARTIFACTS_BY_ID_URL + id);
-  if (!response.ok) {
-    toast.error('Failed to fetch artifact');
+  try {
+    const response = await fetch(`${ARTIFACTS_BY_ID_URL}${id}`);
+    console.log(`Fetching: ${ARTIFACTS_BY_ID_URL}${id}`);
+
+    if (!response.ok) {
+      toast.error('Failed to fetch artifact');
+      return null;
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching artifact by ID:', error);
+    toast.error('An unexpected error occurred');
     return null;
   }
-  const data = await response.json();
-  return data;
 }
 
 export function setArtifacts(artifactsList) {
@@ -42,7 +51,7 @@ export async function searchArtifacts(query) {
 }
 
 export async function addLike(itemId, user) {
-  if (!user || !user._id) {
+  if (!user || !user.id) {
     console.log("Not signed in");
     return;
   }
@@ -53,7 +62,7 @@ export async function addLike(itemId, user) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userId: user._id }),
+      body: JSON.stringify({ userId: user.id }),
     });
 
     if (!response.ok) {

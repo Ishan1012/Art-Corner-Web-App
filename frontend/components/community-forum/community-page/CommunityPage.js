@@ -18,7 +18,7 @@ export default function CommunityPage({ id }) {
     }
 
     const OpenCommunityPage = (item) => {
-        router.push('/community/'+item._id);
+        router.push('/community/'+item.id);
     }
 
     return (

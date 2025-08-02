@@ -31,19 +31,27 @@ export default function DescriptionPage({ id }) {
                     return;
                 }
 
-                const next = data[(found.index + 1) % data.length]._id;
-                const prevIndex = found.index - 1;
-                const prev = prevIndex < 0
-                    ? data[data.length - 1]._id
-                    : data[prevIndex]._id;
+                const currentIndex = data.findIndex(item => item._id === found._id);
+
+                if (currentIndex === -1) {
+                    setUnavail(true);
+                    return;
+                }
+
+                const nextIndex = (currentIndex + 1) % data.length;
+                const prevIndex = (currentIndex - 1 + data.length) % data.length;
+
+                const next = data[nextIndex]._id;
+                const prev = data[prevIndex]._id;
 
                 setPrevId(prev);
                 setNextId(next);
                 setShowArtifact(found);
-                setUser({ _id: '123', })
+
+                setUser({ id: '123', })
 
                 const shuffled = data
-                    .filter(item => item._id !== id)
+                    .filter(item => item.id !== id)
                     .sort(() => Math.random() - 0.5);
 
                 setRecommendList(shuffled.slice(0, 8));
@@ -72,8 +80,8 @@ export default function DescriptionPage({ id }) {
             return;
         }
 
-        if (showArtifact.like.some((item) => item._id === user._id)) {
-            removeLike(showArtifact._id, user._id);
+        if (showArtifact.like.some((item) => item.id === user.id)) {
+            removeLike(showArtifact.id, user.id);
             setShowArtifact(prev => ({
                 ...prev,
                 like: [...prev.like, user]
@@ -83,7 +91,7 @@ export default function DescriptionPage({ id }) {
             addLike(showArtifact, user);
             setShowArtifact(prev => ({
                 ...prev,
-                like: prev.like.filter(likeUser => likeUser._id !== user._id)
+                like: prev.like.filter(likeUser => likeUser.id !== user.id)
             }));
         }
     }
@@ -172,7 +180,7 @@ export default function DescriptionPage({ id }) {
                 </div>
                 <div className="icon-bar d-flex justify-content-center gap-1">
                     <div className="btn" onClick={toggleLike}>
-                        <i className={`bi fs-3 ${showArtifact.like.some(item => item._id === user._id) ? 'bi-heart-fill edit-heart' : 'bi-heart'}`}></i>
+                        <i className={`bi fs-3 ${showArtifact.like.some(item => item.id === user.id) ? 'bi-heart-fill edit-heart' : 'bi-heart'}`}></i>
                     </div >
                     {
                         user ? (
@@ -198,7 +206,7 @@ export default function DescriptionPage({ id }) {
                                     recommendList.map((item, index) => (
                                         <div key={index} className="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
                                             <div className="card text-center h-100 img-container" style={{ overflow: 'hidden' }}>
-                                                <img src={item.img} onClick={() => openImage(item._id)} className="img more-img" alt="image" />
+                                                <img src={item.img} onClick={() => openImage(item.id)} className="img more-img" alt="image" />
                                             </div>
                                         </div>
                                     ))

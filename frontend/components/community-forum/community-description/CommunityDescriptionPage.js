@@ -12,7 +12,7 @@ export default function CommunityDescriptionPage({ id }) {
 
     useEffect(() => {
         const data = getAll();
-        const match = data.find((item) => item._id === id);
+        const match = data.find((item) => item.id === id);
         if(!match) {
             setUnavail(true);
         }
