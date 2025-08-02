@@ -4,6 +4,7 @@ import '@/styles/LoginPage.css';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import { login, signup } from '@/services/UserService';
 
 export default function LoginPage() {
     const [showLogin, setShowLogin] = useState(true);
@@ -25,21 +26,54 @@ export default function LoginPage() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if(!showLogin && (formData.name === '' || formData.email === '' || formData.password === '' || formData.confirmPassword === '')) {
+        if (!showLogin && (formData.name === '' || formData.email === '' || formData.password === '' || formData.confirmPassword === '')) {
             toast.error('Please fill all the details before submitting');
             return;
         }
-        
-        if(showLogin && (formData.email === '' || formData.password === '')) {
+
+        if (showLogin && (formData.email === '' || formData.password === '')) {
             toast.error('Please fill all the details before submitting');
             return;
         }
-        toast.success('Form submitted');
-        router.push('/profile');
-        // router.push('/');
+
+        try {
+            let result;
+
+            if (showLogin) {
+                result = await login({
+                    email: formData.email,
+                    password: formData.password
+                })
+                
+                if (!result || !result._id) {
+                    toast.error(result);
+                    return;
+                }
+
+                toast.success(`Login successful \n You are signed in as ${result.name}`);
+                router.push('/profile');
+            }
+            else {
+                result = await signup({
+                    name: formData.name,
+                    email: formData.email,
+                    password: formData.password,
+                    confirmPassword: formData.confirmPassword,
+                })
+
+                if (!result || !result._id) {
+                    toast.error(result);
+                }
+
+                toast.success(`Signup successful \n You are signed in as ${result.name}`);
+                router.push('/profile');
+            }
+        } catch (err) {
+            toast.error("An error occured " + err.message);
+        }
     }
 
     return (

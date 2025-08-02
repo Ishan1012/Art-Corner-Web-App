@@ -5,6 +5,7 @@ export default async function getAll() {
   const response = await fetch(ARTIFACTS_URL);
   if (!response.ok) {
     toast.error('Failed to fetch artifacts');
+    return [];
   }
   const data = await response.json();
   if (!data || data.length === 0) {

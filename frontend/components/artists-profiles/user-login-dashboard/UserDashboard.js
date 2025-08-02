@@ -13,16 +13,17 @@ export default function UserDashboard() {
     const [dragging, setDragging] = useState(false);
 
     useEffect(() => {
-        const data = getUser({
-            id: "673ae6ef03ba261cdd7171a8",
-            password: "$2a$10$4DtvL.lOl46xCtsbJwV4lOthalYkLex6r.zRFSMg2kjoMSOdv/LrK"
-        });
+        const fetchUser = async () => {
+            const data = await getUser();
 
-        if (data) {
-            setUser(data);
-        } else {
-            toast.error('User not found or invalid credentials.');
-        }
+            if (data && data._id) {
+                setUser(data);
+            } else {
+                toast.error('User not found or invalid credentials.');
+            }
+        };
+
+        fetchUser();
     }, []);
 
     if (!user) {
@@ -77,7 +78,7 @@ export default function UserDashboard() {
             <div className="container edit-container-user">
                 <div className="img-container-user text-center">
                     {user.img && (
-                        <img src={`/${user.img}`} alt="User" className="img-fluid rounded-circle" />
+                        <img src={user.img} alt="User" className="img-fluid rounded-circle" />
                     )}
                 </div>
                 <div className="container text-center edit-text2">
@@ -95,7 +96,7 @@ export default function UserDashboard() {
                                 <div className="d-flex align-items-center mb-2">
                                     {user.img && (
                                         <img
-                                            src={`/${user.img}`}
+                                            src={user.img}
                                             alt="Profile"
                                             className="rounded-circle me-2"
                                             style={{ width: 50, height: 50, objectFit: 'cover' }}

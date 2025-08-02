@@ -1,12 +1,15 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '@/styles/Header.css';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { LoadingPage } from './accessibility-features/loading-page/LoadingPage';
+import { getUser } from '@/services/UserService';
 
 export function Header({ open, setOpen }) {
     const [search, setSearch] = useState('');
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const links = [
         { href: '/', label: 'Home', id: 1 },
@@ -17,6 +20,21 @@ export function Header({ open, setOpen }) {
         { href: '/about', label: 'About', id: 6 },
     ];
     const router = useRouter();
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const data = await getUser();
+
+            if (data && data._id) {
+                setUser(data);
+                setLoading(false);
+            } else {
+                toast.error('User not found or invalid credentials.');
+            }
+        };
+
+        fetchUser();
+    })
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -100,13 +118,13 @@ export function Header({ open, setOpen }) {
                             </Link>
                         ) : (
                             <div className="dropdown profile-dropdown">
-                                <button
+                                <div
                                     type="button"
                                     className="profile-button"
                                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                                 >
                                     <img src={user.img} alt="Profile" className="edit-profile-img" />
-                                </button>
+                                </div>
                                 {isMenuOpen && (
                                     <ul className="dropdown-menu show">
                                         <li><Link className="dropdown-item" href="/profile">Profile</Link></li>

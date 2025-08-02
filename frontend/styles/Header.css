@@ -36,6 +36,7 @@ footer {
     max-width: 2.7rem;
     aspect-ratio: 1/1;
     border-radius: 50%;
+    background-color: #fff;
 }
 
 .dropdown-menu {
