@@ -1,7 +1,8 @@
 import { toast } from "react-toastify";
+import { ARTIFACTS_BY_ID_URL, ARTIFACTS_BY_SEARCH_URL, ARTIFACTS_URL } from "@/shared/constants/urls";
 
 export default async function getAll() {
-  const response = await fetch('http://localhost:5000/api/artifacts/');
+  const response = await fetch(ARTIFACTS_URL);
   if (!response.ok) {
     toast.error('Failed to fetch artifacts');
   }
@@ -14,7 +15,7 @@ export default async function getAll() {
 }
 
 export async function getArtifactById(id) {
-  const response = await fetch(`http://localhost:5000/api/artifacts/${id}`);
+  const response = await fetch(ARTIFACTS_BY_ID_URL + id);
   if (!response.ok) {
     toast.error('Failed to fetch artifact');
     return null;
@@ -28,7 +29,7 @@ export function setArtifacts(artifactsList) {
 }
 
 export async function searchArtifacts(query) {
-  const response = await fetch(`http://localhost:5000/api/artifacts/search/${query}`);
+  const response = await fetch(ARTIFACTS_BY_SEARCH_URL + query);
   if (!response.ok) {
     toast.error('Failed to fetch artifact');
   }
@@ -47,7 +48,7 @@ export async function addLike(itemId, user) {
   }
 
   try {
-    const response = await fetch(`http://localhost:5000/api/artifacts/${itemId}/like`, {
+    const response = await fetch(`${ARTIFACTS_BY_ID_URL + itemId}/like`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -76,7 +77,7 @@ export async function removeLike(itemId, userId) {
   }
 
   try {
-    const response = await fetch(`http://localhost:5000/api/artifacts/${itemId}/unlike`, {
+    const response = await fetch(`${ARTIFACTS_BY_ID_URL + itemId}/unlike`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

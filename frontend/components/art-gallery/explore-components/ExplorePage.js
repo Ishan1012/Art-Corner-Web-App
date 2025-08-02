@@ -27,7 +27,7 @@ export default function ExplorePage() {
         loadData();
     }, []);
 
-    if (!artifacts || !bookmarks) {
+    if (!artifacts || artifacts.length === 0 || !bookmarks) {
         return <LoadingPage />;
     }
 

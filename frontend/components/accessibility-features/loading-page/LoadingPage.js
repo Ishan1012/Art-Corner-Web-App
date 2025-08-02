@@ -1,22 +1,16 @@
 import React from 'react'
+import '@/styles/LoadingPage.css';
 
 export const LoadingPage = () => (
-  <div style={styles.wrapper}>
-    <div className="spinner-border text-warning" role="status" style={styles.spinner}>
-      <span className="visually-hidden">Loading...</span>
+  <div className='container-loading-page'>
+    <div className="loader">
+      <span style={{ '--i': 0 }}></span>
+      <span style={{ '--i': 1 }}></span>
+      <span style={{ '--i': 2 }}></span>
+      <span style={{ '--i': 3 }}></span>
+      <span style={{ '--i': 4 }}></span>
+      <span style={{ '--i': 5 }}></span>
+      <span style={{ '--i': 6 }}></span>
     </div>
   </div>
 );
-
-const styles = {
-  wrapper: {
-    height: '80vh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  spinner: {
-    width: '4rem',
-    height: '4rem',
-  },
-};

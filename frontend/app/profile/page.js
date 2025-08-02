@@ -1,4 +1,4 @@
-import UserDashboard from '@/components/artists-profiles/user-login-dashboard/generate-image-dashboard/UserDashboard'
+import UserDashboard from '@/components/artists-profiles/user-login-dashboard/upload-image-dashboard/UserDashboard'
 import { Header } from '@/components/Header'
 import React from 'react'
 

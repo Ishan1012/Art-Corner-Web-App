@@ -8,7 +8,7 @@ const ArtifactRoutes = require('./router/ArtifactRoutes')
 dotenv.config();
 
 const PORT = 5000;
-const uri = 'mongodb://localhost:27017/artcorner';
+const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/artcorner';
 
 app.use(express.json());
 app.use(cors());
