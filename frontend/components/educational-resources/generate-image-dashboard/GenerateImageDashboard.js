@@ -135,7 +135,7 @@ const AIImageGenerator = () => {
       </header>
 
       {/* Main Content */}
-      <main className="container">
+      <main className="container mb-4">
         <div className="row g-4">
           {/* Left Column - Input */}
           <div className="col-lg-6">
