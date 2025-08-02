@@ -4,6 +4,10 @@ const cors = require('cors')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 const ArtifactRoutes = require('./router/ArtifactRoutes')
+const UserRoutes = require('./router/UserRoutes');
+const CommunityRoutes = require('./router/CommunityRoutes');
+const FeedbackRoutes = require('./router/FeedbackRoutes');
+const NewsletterRoutes = require('./router/NewsletterRoutes');
 
 dotenv.config();
 
@@ -14,7 +18,10 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/artifacts', ArtifactRoutes);
-// app.use('/api/users', UserRoutes);
+app.use('/api/users', UserRoutes);
+app.use('/api/community', CommunityRoutes);
+app.use('/api/feedback', FeedbackRoutes);
+app.use('/api/newsletter', NewsletterRoutes);
 
 mongoose.connect(uri, {
     useNewUrlParser: true,

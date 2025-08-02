@@ -59,6 +59,10 @@ const AIImageGenerator = () => {
         }),
       });
 
+      if(isGenerating || generationsToday >= MAX_GENERATIONS_PER_DAY || !prompt.trim()) {
+        toast.error('Generation cancelled or your daily limit has reached');
+      }
+
       clearInterval(progressInterval);
       setProgress(100);
 
@@ -126,11 +130,6 @@ const AIImageGenerator = () => {
             <Sparkles size={32} color="#ffc107" />
             <h1 className="h4 m-0">AI Image Generator</h1>
           </div>
-          <div className="text-end">
-            <div className="text-muted small mb-1">
-              {generationsToday}/{MAX_GENERATIONS_PER_DAY} generations used today
-            </div>
-          </div>
         </div>
       </header>
 
@@ -161,7 +160,6 @@ const AIImageGenerator = () => {
 
             <button
               onClick={generateImage}
-              disabled={isGenerating || generationsToday >= MAX_GENERATIONS_PER_DAY || !prompt.trim()}
               className="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2"
               style={{ backgroundColor: '#ffc107', borderColor: '#ffc107' }}
             >

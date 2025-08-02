@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-import AdminDashboard from '../../admin-login-dashboard/AdminDashboard';
+import AdminDashboard from '../admin-login-dashboard/AdminDashboard';
 import { getUser } from '@/services/UserService';
 import { LoadingPage } from '@/components/accessibility-features/loading-page/LoadingPage';
 import { toast } from 'react-toastify';
@@ -81,7 +81,7 @@ export default function UserDashboard() {
                     )}
                 </div>
                 <div className="container text-center edit-text2">
-                    <h1>{user.name}</h1>
+                    <h1>{user.username}</h1>
                 </div>
             </div>
 

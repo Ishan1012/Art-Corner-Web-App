@@ -107,7 +107,6 @@ router.post('/', async (req, res) => {
 
     try {
         const artifact = new Artifact({
-            _id,
             title,
             desc,
             img,

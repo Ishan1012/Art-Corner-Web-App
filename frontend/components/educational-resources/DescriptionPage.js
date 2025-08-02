@@ -163,7 +163,7 @@ export default function DescriptionPage({ id }) {
                 <br />
                 <div className="title-image-wrapper d-flex align-items-center flex-column">
                     <div>
-                        <img src={'/' + showArtifact.img} loading="lazy"
+                        <img src={showArtifact.img} loading="lazy"
                             className={`${!isFading && 'show'} img-edit mb-3 h-xl-10 h-md-20 h-sm-30`} alt="Image" style={{ padding: 0 }} onLoad={() => setIsLoading(false)} />
                     </div>
                     <div>
@@ -198,7 +198,7 @@ export default function DescriptionPage({ id }) {
                                     recommendList.map((item, index) => (
                                         <div key={index} className="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
                                             <div className="card text-center h-100 img-container" style={{ overflow: 'hidden' }}>
-                                                <img src={'/' + item.img} onClick={() => openImage(item._id)} className="img more-img" alt="image" />
+                                                <img src={item.img} onClick={() => openImage(item._id)} className="img more-img" alt="image" />
                                             </div>
                                         </div>
                                     ))
