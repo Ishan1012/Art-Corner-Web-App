@@ -3,7 +3,6 @@ import { ARTIFACTS_BY_ID_URL, ARTIFACTS_BY_SEARCH_URL, ARTIFACTS_URL } from "@/s
 
 export default async function getAll() {
   const response = await fetch(ARTIFACTS_URL);
-  console.log(ARTIFACTS_URL);
   if (!response.ok) {
     toast.error('Failed to fetch artifacts');
     return [];
@@ -19,7 +18,6 @@ export default async function getAll() {
 export async function getArtifactById(id) {
   try {
     const response = await fetch(`${ARTIFACTS_BY_ID_URL}${id}`);
-    console.log(`Fetching: ${ARTIFACTS_BY_ID_URL}${id}`);
 
     if (!response.ok) {
       toast.error('Failed to fetch artifact');
