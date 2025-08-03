@@ -234,16 +234,107 @@ textarea {
     border-top: none !important;
 }
 
-#contact .detail-box .icon {
-    background: var(--third-color);
-    padding: 15px 16px;
-    border-radius: 50%;
-}
-
 #contact .detail-box h5 {
     font-size: 18px;
 }
 
 #contact .detail-box h4 {
     font-size: 23px;
+}
+
+
+@media(max-width:1100px){
+    nav{
+        padding: 0 7% !important;
+    }
+    #header{
+        padding: 10% 5% !important;
+        padding-top: 140px;
+    }
+    #about{
+        padding: 10% 5% !important;
+    }
+    #skill-expe{
+        padding: 15% 5% !important;
+    }
+    #skill-expe .experience h2{
+        font-size: 3rem;
+    }
+    #projects{
+        padding: 10% 5%;
+    }
+    #projects .projects{
+        grid-template-columns: repeat(2,1fr);
+    }
+    #content{
+        padding: 10% 5%;
+    }
+    #footer{
+        padding: 5%;
+    }
+
+}
+
+@media(max-width:800px){
+    nav ul{
+        position: absolute;
+        top: 100%;
+        left: 0%;
+        width: 100%;
+        border-top: 2px solid #000;
+        padding: 15px 0;
+        /* display: none; */
+        background-color: #fff;   
+    }
+    nav ul li{
+        display: block;
+        margin: 35px;
+    }
+    nav .toggle{
+        display: block;
+    }
+    .open{
+        display: block;
+    }
+    #header{
+        flex-direction: column;
+    }
+    #header .content{
+        align-items: center;
+        text-align: center;
+    }
+    #header .content h1{
+        font-size: 3.1rem;
+        line-height: 60px;
+    }
+    .rotate{
+        margin-top: 25px;
+        transform: rotate(0deg);
+    }
+    #about .services{
+        grid-template-columns: repeat(1,1fr);
+    }
+    #skill-expe .experience{
+        flex-direction: column;
+        gap: 40px;
+    }
+    .experience .content{
+        width: 100% !important;
+    }
+    .experience .expe{
+        width: 100% !important;
+    }
+    #skill-expe .skills .skills-profile{
+        flex-direction: column;
+        gap: 30px;
+    }
+    #projects .projects{
+        grid-template-columns: repeat(1,1fr);
+    }
+    #contact .contact-details{
+        flex-direction: column !important;
+    }
+    h2{
+        font-size: 2.5rem;
+    }
 }

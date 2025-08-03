@@ -192,18 +192,14 @@ export default function AboutPage() {
                     </form>
                     <div className="details">
                         <div className="detail-box">
-                            <div className="icon">
-                                <i className="fa fa-envelope"></i>
-                            </div>
+                            <div className="icon"></div>
                             <div className="box">
                                 <h5>Email</h5>
                                 <h4>2k23.cs2312241&#64;gmail.com</h4>
                             </div>
                         </div>
                         <div className="detail-box">
-                            <div className="icon">
-                                <i className="fa fa-location"></i>
-                            </div>
+                            <div className="icon"></div>
                             <div className="box">
                                 <h5>Visit our github page:</h5>
                                 <h4><Link target='_blank' href="https://github.com/Ishan1012/Art-Corner-Web-App">https://github.com/Ishan1012/Art-Corner-Web-App</Link></h4>
