@@ -276,23 +276,6 @@ textarea {
 }
 
 @media(max-width:800px){
-    nav ul{
-        position: absolute;
-        top: 100%;
-        left: 0%;
-        width: 100%;
-        border-top: 2px solid #000;
-        padding: 15px 0;
-        /* display: none; */
-        background-color: #fff;   
-    }
-    nav ul li{
-        display: block;
-        margin: 35px;
-    }
-    nav .toggle{
-        display: block;
-    }
     .open{
         display: block;
     }
