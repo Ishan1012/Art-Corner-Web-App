@@ -71,8 +71,8 @@ export default function CommunityPage() {
                 <div className="row g-4 justify-content-center text-center">
                     {
                         communities.map((item, index) => (
-                            <div key={index} className="col-xl-3 col-lg-4 col-md-5 col-sm-7 col-7">
-                                <div className="content2 content2-1 text-center" style={{ width: 290 }}>
+                            <div key={index} className="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
+                                <div className="content2 content2-1 text-center">
                                     <div className="card-body text-center mb-3">
                                         <img src={item.img} alt={item.name} />
                                         <h5 className="card-title mt-3 mb-3">{item.name}</h5>
