@@ -47,28 +47,29 @@ export default function LoginPage() {
                     email: formData.email,
                     password: formData.password
                 })
-                
+
                 if (!result || !result._id) {
-                    toast.error(result);
+                    toast.error("Login failed: "+result);
                     return;
                 }
 
-                toast.success(`Login successful \n You are signed in as ${result.name}`);
+                toast.success(`Login successful \n You are signed in as ${result.username}`);
                 router.push('/profile');
             }
             else {
                 result = await signup({
-                    name: formData.name,
+                    username: formData.name,
                     email: formData.email,
                     password: formData.password,
                     confirmPassword: formData.confirmPassword,
                 })
 
                 if (!result || !result._id) {
-                    toast.error(result);
+                    toast.error('Signup failed. Please try again.');
+                    return;
                 }
 
-                toast.success(`Signup successful \n You are signed in as ${result.name}`);
+                toast.success(`Signup successful \n You are signed in as ${result.username}`);
                 router.push('/profile');
             }
         } catch (err) {

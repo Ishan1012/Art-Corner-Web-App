@@ -3,13 +3,16 @@ import React, { useState } from 'react'
 import '@/styles/AboutPage.css';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
+import sendFeedback from '@/services/FeedbackService';
+import { useRouter } from 'next/navigation';
 
 export default function AboutPage() {
+    const router = useRouter();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         subject: '',
-        message: ''
+        description: ''
     });
 
     const scrollToElement = (elementId) => {
@@ -32,15 +35,32 @@ export default function AboutPage() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (formData.name === '' || formData.email === '' || formData.subject === '' || formData.message === '') {
+        if (formData.name === '' || formData.email === '' || formData.subject === '') {
             toast.error('Please fill all the details before submitting');
             return;
         }
-        toast.success('Form submitted');
-        router.push('/');
+
+        try {
+            const response = await sendFeedback(formData);
+
+            if (response.success) {
+                toast.success('Thank you for your valuable feedback!');
+                router.push('/');
+                setFormData({
+                    name: '',
+                    email: '',
+                    subject: '',
+                    description: ''
+                });
+            } else {
+                toast.error("Cannot post the feedback. " + response.reason);
+            }
+        } catch (err) {
+            toast.error("Failed to post the feedback. " + err);
+        }
     }
 
     return (
@@ -132,6 +152,8 @@ export default function AboutPage() {
                                     type="text"
                                     name="name"
                                     placeholder="Name"
+                                    value={formData.name}
+                                    onChange={handleChange}
                                 />
                             </div>
                             <div className="Email-box">
@@ -140,6 +162,8 @@ export default function AboutPage() {
                                     type="email"
                                     name="email"
                                     placeholder="Email"
+                                    value={formData.email}
+                                    onChange={handleChange}
                                 />
                             </div>
                         </div>
@@ -149,20 +173,22 @@ export default function AboutPage() {
                                 type="text"
                                 name="subject"
                                 placeholder="Subject"
+                                value={formData.subject}
+                                onChange={handleChange}
                             />
                         </div>
                         <div className="Message">
                             <label htmlFor="#">Message</label>
                             <textarea
-                                name="message"
+                                name="description"
                                 cols="30"
                                 rows="5"
                                 placeholder="Message"
-                                value={formData.message}
+                                value={formData.description}
                                 onChange={handleChange}
                             ></textarea>
                         </div>
-                        <button className="send-edit"><a className="text-decoration-none fw-bold">Send message</a></button>
+                        <button className="send-edit"><a className="text-decoration-none fw-bold">Send description</a></button>
                     </form>
                     <div className="details">
                         <div className="detail-box">

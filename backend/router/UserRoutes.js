@@ -74,7 +74,7 @@ router.get('/getlist/:pass', async (req, res) => {
 
     try {
         const users = await User.find();
-        res.status(200).json(users);
+        res.status(200).json({ users });
     } catch (error) {
         res.status(500).json({
             message: 'Internal server error',
@@ -89,20 +89,20 @@ router.post("/login", async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-        res.status(400).send("Username or password is not valid");
+        res.status(400).json({ message: "Username or password is not valid"});
         return;
     }
 
     if (user.status !== "active") {
-        res.status(404).send("User has been blocked by the admin");
+        res.status(404).json({ message: "User has been blocked by the admin"});
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
-        res.send(generateTokenResponse(user));
+        res.json({user: generateTokenResponse(user)});
     }
     else {
-        res.status(400).send("Username or password is not valid");
+        res.status(400).json("Username or password is not valid");
     }
 });
 
@@ -113,7 +113,7 @@ router.post('/signup', async (req, res) => {
     });
 
     if (existingUser) {
-        res.status(400).send('User already exists, please login!');
+        res.status(400).json({message: 'User already exists, please login!'});
         return;
     }
 
@@ -129,6 +129,7 @@ router.post('/signup', async (req, res) => {
         }
 
         const dbUser = await User.create(newUser);
+        console.log(dbUser);
 
         const transporter = nodemailer.createTransport({
             service: 'Gmail',
@@ -146,9 +147,10 @@ router.post('/signup', async (req, res) => {
             html: Message(verificationUrl, process.env.HERO_IMG),
         })
 
-        res.status(200).send(generateTokenResponse(dbUser));
+        res.status(200).json({ user:generateTokenResponse(dbUser) });
     } catch (err) {
-        res.status(500).send({ message: 'An error occurred while creating the user.'+err });
+        res.status(500).json({ message: 'An error occurred while creating the user.'+err });
+        console.log(err);
     }
 })
 
@@ -169,7 +171,7 @@ router.get('/verify', async (req, res) => {
         res.status(200).send(VerificationPage());
     }
     catch (err) {
-        res.status(500).send({ message: 'An error occurred during email verification. ' + err + " token: " + token })
+        res.status(500).json({ message: 'An error occurred during email verification. ' + err + " token: " + token })
     }
 })
 

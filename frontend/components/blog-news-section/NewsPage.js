@@ -5,13 +5,25 @@ import { LoadingPage } from '../accessibility-features/loading-page/LoadingPage'
 
 export default function NewsPage() {
     const [newsletters, setNewsletters] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const data = getAllNewsletters();
-        setNewsletters(data);
+        const fetchData = async () => {
+            const data = await getAllNewsletters();
+
+            if (!data || data.length === 0) {
+                setLoading(false);
+                return;
+            }
+
+            setNewsletters(data);
+            setLoading(false);
+        };
+
+        fetchData();
     }, []);
 
-    if (!newsletters || newsletters.length === 0) {
+    if (loading) {
         return <LoadingPage />;
     }
 

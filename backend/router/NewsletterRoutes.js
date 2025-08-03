@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const Newsletter = require('../model/Newsletter');
-const { generateTokenResponse } = require('../utils/generateTokenResponse');
 
 router.get('/', async (req, res) => {
     try {
@@ -30,7 +29,7 @@ router.post('/', async (req, res) => {
 
         const dbNewsletter = await Newsletter.create(newNewsletter);
 
-        res.status(200).json(generateTokenResponse(dbNewsletter));
+        res.status(200).json(dbNewsletter);
     } catch (error) {
         res.status(500).json({
             message: 'Internal server error',

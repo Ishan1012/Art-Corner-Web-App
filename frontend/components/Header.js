@@ -3,13 +3,12 @@ import React, { useEffect, useState } from 'react';
 import '@/styles/Header.css';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { LoadingPage } from './accessibility-features/loading-page/LoadingPage';
-import { getUser } from '@/services/UserService';
+import { getUser, logout } from '@/services/UserService';
+import { toast } from 'react-toastify';
 
 export function Header({ open, setOpen }) {
     const [search, setSearch] = useState('');
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const links = [
         { href: '/', label: 'Home', id: 1 },
@@ -27,14 +26,11 @@ export function Header({ open, setOpen }) {
 
             if (data && data._id) {
                 setUser(data);
-                setLoading(false);
-            } else {
-                toast.error('User not found or invalid credentials.');
             }
         };
 
         fetchUser();
-    })
+    }, []);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -43,10 +39,25 @@ export function Header({ open, setOpen }) {
         }
     };
 
-    const logout = (e) => {
-        e.preventDefault();
-        // Implement logout logic
+    const handleLogout = () => {
+        try {
+            const data = logout();
+
+            if (data) {
+                toast.info("Logged out");
+                router.push('/');
+            } else {
+                toast.error("Cannot logout due to an error");
+            }
+        } catch (err) {
+            toast.error("An error occurred during logout");
+            console.error(err);
+        }
     };
+
+    const openProfile = () => {
+        router.push('/profile');
+    }
 
     const toggleMenu = () => {
         setIsMenuOpen(prev => !prev);
@@ -121,16 +132,13 @@ export function Header({ open, setOpen }) {
                                 <div
                                     type="button"
                                     className="profile-button"
-                                    onClick={() => setIsMenuOpen(!isMenuOpen)}
                                 >
                                     <img src={user.img} alt="Profile" className="edit-profile-img" />
                                 </div>
-                                {isMenuOpen && (
-                                    <ul className="dropdown-menu show">
-                                        <li><Link className="dropdown-item" href="/profile">Profile</Link></li>
-                                        <li><button className="dropdown-item" onClick={logout}>Logout</button></li>
-                                    </ul>
-                                )}
+                                <ul className="dropdown-menu show">
+                                    <li><button onClick={openProfile} className="dropdown-item">Profile</button></li>
+                                    <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
+                                </ul>
                             </div>
                         )}
                     </div>

@@ -1,32 +1,37 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import AdminDashboard from '../admin-login-dashboard/AdminDashboard';
-import { getUser } from '@/services/UserService';
+import { getUser, logout } from '@/services/UserService';
 import { LoadingPage } from '@/components/accessibility-features/loading-page/LoadingPage';
 import { toast } from 'react-toastify';
 import '@/styles/UserDashboard.css';
+import { useRouter } from 'next/navigation';
 
 export default function UserDashboard() {
     const [user, setUser] = useState(null);
+    const router = useRouter();
+    const [loading, setLoading] = useState(true);
     const [selectedFile, setSelectedFile] = useState(null);
     const dropRef = useRef(null);
     const [dragging, setDragging] = useState(false);
 
     useEffect(() => {
-        const fetchUser = async () => {
-            const data = await getUser();
+        const fetchUser = () => {
+            const data = getUser();
 
             if (data && data._id) {
                 setUser(data);
             } else {
                 toast.error('User not found or invalid credentials.');
+                router.push('/');
             }
+            setLoading(false);
         };
 
         fetchUser();
     }, []);
 
-    if (!user) {
+    if (loading) {
         return <LoadingPage />;
     }
 
@@ -67,10 +72,20 @@ export default function UserDashboard() {
         }
     };
 
-    const logout = () => {
-        // Add your logout logic here
-        toast.info("Logged out");
-        // You might want to clear state or redirect
+    const handleLogout = () => {
+        try {
+            const data = logout();
+
+            if (data) {
+                toast.info("Logged out");
+                router.push('/');
+            } else {
+                toast.error("Cannot logout due to an error");
+            }
+        } catch (err) {
+            toast.error("An error occurred during logout");
+            console.error(err);
+        }
     };
 
     return (
@@ -82,8 +97,17 @@ export default function UserDashboard() {
                     )}
                 </div>
                 <div className="container text-center edit-text2">
-                    <h1>{user.username}</h1>
+                    <h1>
+                        {user.username}
+                        {user.isVerified && (
+                            <i
+                                className="bi bi-patch-check-fill text-primary ms-2"
+                                title="Verified"
+                            ></i>
+                        )}
+                    </h1>
                 </div>
+
             </div>
 
             <div className="container min-vh-100">
@@ -158,8 +182,8 @@ export default function UserDashboard() {
                     </div>
                 </div>
 
-                <div className="container edit-login2 text-center mt-5">
-                    <button onClick={logout} className="btn btn-danger">Logout</button>
+                <div className="container edit-login2 text-center mt-3 mb-4">
+                    <button onClick={handleLogout} className="btn btn-danger">Logout</button>
                 </div>
             </div>
         </div>

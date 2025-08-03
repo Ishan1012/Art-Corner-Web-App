@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const Feedback = require('../model/Feedback');
-const { generateTokenResponse } = require('../utils/generateTokenResponse');
 
 router.get('/', async (req, res) => {
     try {
@@ -18,7 +17,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const { name, email, subject, description } = req.body;
 
-    if(!name || !email || !subject || !description) {
+    if(!name || !email || !subject) {
         return res.status(400).send({ message: 'Fields cannot be empty' });
     }
 
@@ -33,7 +32,7 @@ router.post('/', async (req, res) => {
         const dbFeedback = await Feedback.create(newFeedback);
 
         if(dbFeedback) {
-            res.status(200).json(generateTokenResponse(dbFeedback));
+            res.status(200).json(dbFeedback);
         }
     } catch (err) {
         res.status(500).send({ message: 'An error occurred.' + err + " token: " + token })
@@ -50,7 +49,7 @@ router.delete('/:id', async (req, res) => {
             return res.status(404).json({ message: 'Feedback not found.' });
         }
         
-        res.send(200).json(generateTokenResponse(feedback));
+        res.send(200).json(feedback);
     } catch (err) {
         res.status(500).json({
             message: 'An error occurred.',

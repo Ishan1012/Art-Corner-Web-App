@@ -12,10 +12,11 @@ const NewsletterRoutes = require('./router/NewsletterRoutes');
 dotenv.config();
 
 const PORT = 5000;
-const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/artcorner';
+const uri = process.env.MONGO_URI;
 
 app.use(express.json());
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/artifacts', ArtifactRoutes);
 app.use('/api/users', UserRoutes);
