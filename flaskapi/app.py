@@ -5,9 +5,9 @@ import pickle
 import io
 import base64
 from torchvision import transforms
+from PIL import Image, ImageFilter
 
-from upscale_img import upscale_image
-from model import Generator  # Make sure this is the updated 128x128 Generator
+from model import Generator  # Updated Generator with ResidualBlock
 
 # Load TF-IDF vectorizer
 with open("vectorizer.pkl", "rb") as f:
@@ -58,12 +58,13 @@ def generate():
         output_img = (output_img + 1) / 2  # De-normalize [-1, 1] to [0, 1]
         output_img_pil = transforms.ToPILImage()(output_img)
 
-        # Optional: Upscale the image
-        upscaled_img = upscale_image(output_img_pil)
+        # 🔧 Post-process: Upscale to 512x512 and apply smoothing
+        upscaled_img = output_img_pil.resize((512, 512), Image.BICUBIC)
+        smoothed_img = upscaled_img.filter(ImageFilter.SMOOTH_MORE)
 
         # Convert to base64
         img_io = io.BytesIO()
-        upscaled_img.save(img_io, format='PNG')
+        smoothed_img.save(img_io, format='PNG')
         img_io.seek(0)
         img_base64 = base64.b64encode(img_io.read()).decode('utf-8')
 

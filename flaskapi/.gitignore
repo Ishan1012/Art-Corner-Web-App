@@ -30,6 +30,3 @@ dist/
 # System files
 .DS_Store
 Thumbs.db
-
-vectorizer.pkl
-generator_model.pth
