@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: art-corner-app
+    name: art-corner-image-generator
     env: python
     buildCommand: |
       pip install --upgrade pip
