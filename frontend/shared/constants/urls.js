@@ -1,5 +1,5 @@
 export const PORT = process.env.PORT || 5000;
-export const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URI || `http://localhost:${PORT}`;
+export const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URI;
 
 export const ARTIFACTS_URL = BASE_URL + "/api/artifacts";
 export const NEWSLETTERS_URL = BASE_URL + "/api/newsletter";
