@@ -5,10 +5,23 @@ import '@/styles/IndexPage.css';
 import GridOne from './grid-one-content/GridOne';
 import ServicesContent from './service-content/ServicesContent';
 import { useRouter } from 'next/navigation';
+import { getUser } from '@/services/UserService';
 
 export default function IndexPage() {
-    const [user, serUser] = useState(null);
+    const [user, setUser] = useState(null);
     const router = useRouter();
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const data = await getUser();
+
+            if (data && data._id) {
+                setUser(data);
+            }
+        };
+
+        fetchUser();
+    }, []);
 
     const redirect = () => {
         if(!user) {
