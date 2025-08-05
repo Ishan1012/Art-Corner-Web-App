@@ -2,18 +2,44 @@ import { toast } from "react-toastify";
 import { ARTIFACTS_BY_ID_URL, ARTIFACTS_BY_SEARCH_URL, ARTIFACTS_URL } from "@/shared/constants/urls";
 
 export default async function getAll() {
-  const response = await fetch(ARTIFACTS_URL);
-  if (!response.ok) {
-    toast.error('Failed to fetch artifacts');
+  try {
+    const response = await fetch(ARTIFACTS_URL);
+
+    if (!response.ok) {
+      toast.error('Failed to fetch artifacts');
+      return [];
+    }
+
+    const data = await response.json();
+
+    if (!data || data.length === 0) {
+      toast.error('No artifacts found');
+      return [];
+    }
+
+    // Convert buffer images to base64
+    const convertedData = data.map((artifact) => {
+      if (typeof artifact.img === 'string' && artifact.img.includes('/img/img')) {
+        // Image is already a valid path, no changes needed
+        return artifact;
+      } else {
+        const base64Image = `data:${artifact.contentType};base64,${artifact.img.toString('base64')}`;
+        console.log(base64Image);
+        return {
+          ...artifact,
+          img: base64Image,
+        };
+      }
+    });
+
+    return convertedData;
+  } catch (error) {
+    console.error('Error fetching artifacts:', error);
+    toast.error('An unexpected error occurred');
     return [];
   }
-  const data = await response.json();
-  if (!data || data.length === 0) {
-    toast.error('No artifacts found');
-    return [];
-  }
-  return data;
 }
+
 
 export async function getArtifactById(id) {
   try {
@@ -24,8 +50,18 @@ export async function getArtifactById(id) {
       return null;
     }
 
-    const data = await response.json();
-    return data;
+    const artifact = await response.json();
+    if (typeof artifact.img === 'string' && artifact.img.includes('/img/img')) {
+      // Image is already a valid path, no changes needed
+      return artifact;
+    } else {
+      const base64Image = `data:${artifact.contentType};base64,${artifact.img.toString('base64')}`;
+      console.log(base64Image);
+      return {
+        ...artifact,
+        img: base64Image,
+      };
+    }
   } catch (error) {
     console.error('Error fetching artifact by ID:', error);
     toast.error('An unexpected error occurred');
@@ -47,7 +83,20 @@ export async function searchArtifacts(query) {
     toast.error('No artifacts found');
     return [];
   }
-  return data;
+  const convertedData = data.map((artifact) => {
+    if (typeof artifact.img === 'string' && artifact.img.includes('/img/img')) {
+      // Image is already a valid path, no changes needed
+      return artifact;
+    } else {
+      const base64Image = `data:${artifact.contentType};base64,${artifact.img.toString('base64')}`;
+      return {
+        ...artifact,
+        img: base64Image,
+      };
+    }
+  });
+
+  return convertedData;
 }
 
 export async function addLike(itemId, user) {

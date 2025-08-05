@@ -1,5 +1,5 @@
 export const PORT = process.env.PORT || 5000;
-export const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URI;
+export const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URI || `http://localhost:${PORT}`;
 
 export const ARTIFACTS_URL = BASE_URL + "/api/artifacts";
 export const NEWSLETTERS_URL = BASE_URL + "/api/newsletter";
@@ -15,7 +15,7 @@ export const USER_REGISTER_URL = BASE_URL + "/api/users/signup";
 export const GET_USER_LIST_URL = BASE_URL + `/api/users/getlist/${process.env.ACCESS_KEY}`;
 
 
-export const POST_ARTIFACTS = ARTIFACTS_URL+"/";
+export const POST_ARTIFACTS = ARTIFACTS_URL+"/upload";
 export const POST_COMMUNITY = COMMUNITY_URL+"/create";
 export const POST_FEEDBACK = BASE_URL + "/api/feedback/";
 export const GENERATE_IMAGE_URL = BASE_URL + "/api/image/generate";

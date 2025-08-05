@@ -1,28 +1,33 @@
 import { POST_ARTIFACTS } from "@/shared/constants/urls";
+import { toast } from "react-toastify";
 
-export default async function UploadImageService(file, formData) {
-    if (!file) {
-        throw new Error("No file provided");
-    }
+export default async function UploadImageService(formData) {
+  const { title, desc, img, contentType, tags } = formData;
 
-    formData = new FormData({
-        image: file
+  try {
+    const response = await fetch(POST_ARTIFACTS, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title,
+        desc,
+        img,
+        contentType,
+        tags,
+      }),
     });
 
-    try {
-        const response = await fetch(POST_ARTIFACTS, {
-            method: 'POST',
-            body: formData,
-        });
-
-        if (!response.ok) {
-            throw new Error(`Upload failed: ${response.statusText}`);
-        }
-
-        const result = await response.json();
-        return result;
-    } catch (error) {
-        console.error("Error uploading image:", error);
-        throw error;
+    if (!response.ok) {
+      const data = await response.json();
+      toast.error(`Upload failed: ${data.message}`);
+      return;
     }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error uploading image:", error);
+  }
 }

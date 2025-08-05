@@ -6,6 +6,7 @@ import { LoadingPage } from '@/components/accessibility-features/loading-page/Lo
 import { toast } from 'react-toastify';
 import '@/styles/UserDashboard.css';
 import { useRouter } from 'next/navigation';
+import UploadImageService from '@/services/UploadImageService';
 
 export default function UserDashboard() {
     const [user, setUser] = useState(null);
@@ -14,6 +15,12 @@ export default function UserDashboard() {
     const [selectedFile, setSelectedFile] = useState(null);
     const dropRef = useRef(null);
     const [dragging, setDragging] = useState(false);
+    const [tagInput, setTagInput] = useState('');
+    const [formData, setFormData] = useState({
+        title: '',
+        desc: '',
+        tags: [],
+    });
 
     useEffect(() => {
         const fetchUser = () => {
@@ -39,11 +46,76 @@ export default function UserDashboard() {
         return <AdminDashboard />;
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        toast.success("Form submitted");
-        // Add your form processing logic here
+    const handleTagKeyDown = (e) => {
+        if ((e.key === 'Enter' || e.key === ',') && tagInput.trim()) {
+            e.preventDefault();
+            const newTag = tagInput.trim().replace(/,/g, '');
+
+            if (!formData.tags.includes(newTag)) {
+                setFormData((prev) => ({
+                    ...prev,
+                    tags: [...prev.tags, newTag],
+                }));
+            }
+
+            setTagInput('');
+        }
     };
+
+    const removeTag = (indexToRemove) => {
+        setFormData((prev) => ({
+            ...prev,
+            tags: prev.tags.filter((_, i) => i !== indexToRemove),
+        }));
+    };
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!selectedFile || formData.title === '' || formData.desc === '') {
+            console.log(selectedFile,formData);
+            toast.error('Please fill all the details before submitting');
+            return;
+        }
+
+        try {
+            const reader = new FileReader();
+
+            reader.onloadend = async () => {
+                const base64Data = reader.result;
+                const contentType = selectedFile.type;
+
+                const payload = {
+                    title: formData.title,
+                    desc: formData.desc,
+                    img: base64Data,
+                    contentType,
+                    tags: formData.tags || [],
+                };
+
+                try {
+                    const response = await UploadImageService(payload);
+
+                    if(response !== undefined) {
+                        toast.success('Image uploaded successfully!');
+                        router.push('/explore');
+                    } else {
+                        toast.error('An error occured. ');
+                    }
+                } catch (error) {
+                    toast.error('Failed to upload image.');
+                    console.error('Upload error:', error);
+                }
+            };
+
+            reader.readAsDataURL(selectedFile); // read file as base64
+        } catch (err) {
+            toast.error('An error occurred while processing the image.');
+            console.error(err);
+        }
+    };
+
 
     const handleDragOver = (e) => {
         e.preventDefault();
@@ -70,6 +142,13 @@ export default function UserDashboard() {
         if (e.target.files && e.target.files[0]) {
             setSelectedFile(e.target.files[0]);
         }
+    };
+
+    const handleChange = (e) => {
+        setFormData(prev => ({
+            ...prev,
+            [e.target.name]: e.target.value
+        }));
     };
 
     const handleLogout = () => {
@@ -133,6 +212,8 @@ export default function UserDashboard() {
                                         rows="1"
                                         style={{ resize: 'none' }}
                                         name="title"
+                                        value={formData.title}
+                                        onChange={handleChange}
                                         required
                                     ></textarea>
                                 </div>
@@ -141,9 +222,38 @@ export default function UserDashboard() {
                                     placeholder="What would you like to talk about?"
                                     rows="10"
                                     style={{ resize: 'none' }}
+                                    value={formData.desc}
+                                    onChange={handleChange}
                                     name="desc"
                                     required
                                 ></textarea>
+                                <div className="d-flex flex-column mb-3">
+                                    <div className="d-flex flex-row mb-3">
+                                        <h4 className="px-3">Tags:</h4>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Type tag and press Enter or comma"
+                                            value={tagInput}
+                                            onChange={(e) => setTagInput(e.target.value)}
+                                            onKeyDown={handleTagKeyDown}
+                                        />
+                                    </div>
+                                    <div className="d-flex flex-wrap gap-2 mb-2">
+                                        {formData.tags.map((tag, index) => (
+                                            <span key={index} className="badge bg-primary">
+                                                {tag}
+                                                <button
+                                                    type="button"
+                                                    className="btn-close btn-close-white ms-2"
+                                                    onClick={() => removeTag(index)}
+                                                    style={{ fontSize: '0.6rem' }}
+                                                ></button>
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+
                             </div>
 
                             {

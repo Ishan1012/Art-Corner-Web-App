@@ -15,9 +15,9 @@ dotenv.config();
 const PORT = 5000;
 const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/artcorner';
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 app.use(cors());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 app.use('/api/artifacts', ArtifactRoutes);
 app.use('/api/users', UserRoutes);

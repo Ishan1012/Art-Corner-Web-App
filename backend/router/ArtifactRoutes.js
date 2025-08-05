@@ -98,28 +98,52 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
-    const { title, desc, img, contentType, tags } = req.body;
+router.post('/upload', async (req, res) => {
+  const { title, desc, img, contentType, tags } = req.body;
 
-    if ( !title || !desc || !img || !contentType) {
-        return res.status(400).json({
-            message: 'Invalid input. All fields are required and cannot be empty.'
-        })
-    }
+  if (!title || !desc || !img) {
+    return res.status(400).json({
+      message: 'Invalid input. All fields are required and cannot be empty.'
+    });
+  }
 
+  let finalImage = img;
+
+  // Check if img is a base64 string (starts with data:) OR a path string
+  const isBase64 = typeof img === 'string' && img.startsWith('data:');
+
+  if (isBase64) {
     try {
-        const artifact = new Artifact({
-            title,
-            desc,
-            img,
-            contentType,
-            tags
-        });
-        await artifact.save();
-        res.status(201).json(artifact);
+      // Extract base64 data from data URI
+      const base64Data = img.split(',')[1];
+      finalImage = Buffer.from(base64Data, 'base64');
     } catch (err) {
-        res.status(500).json({ message: 'Error creating artifact: ' + err.message });
+      return res.status(400).json({
+        message: 'Invalid base64 image format.'
+      });
     }
-})
+  } else if (typeof img === 'string' && img.includes('/img/img')) {
+    // Leave finalImage as-is
+  } else {
+    return res.status(400).json({
+      message: 'Invalid image. Must be base64 string or valid image path.'
+    });
+  }
+
+  try {
+    const artifact = new Artifact({
+      title,
+      desc,
+      img: finalImage,
+      contentType,
+      tags
+    });
+
+    await artifact.save();
+    res.status(201).json(artifact);
+  } catch (err) {
+    res.status(500).json({ message: 'Error creating artifact: ' + err.message });
+  }
+});
 
 module.exports = router;

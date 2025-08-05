@@ -5,6 +5,7 @@ import '@/styles/DescriptionPage.css';
 import { LoadingPage } from '../accessibility-features/loading-page/LoadingPage';
 import { useRouter } from 'next/navigation';
 import ErrorPage from '../accessibility-features/error-page/ErrorPage';
+import { getUser } from '@/services/UserService';
 
 export default function DescriptionPage({ id }) {
     const [user, setUser] = useState(null);
@@ -47,7 +48,6 @@ export default function DescriptionPage({ id }) {
                 setPrevId(prev);
                 setNextId(next);
                 setShowArtifact(found);
-                setUser({ id: 123, });
 
                 const shuffled = data
                     .filter(item => item.id !== id)
@@ -60,6 +60,15 @@ export default function DescriptionPage({ id }) {
             }
         };
 
+        const fetchUser = async () => {
+            const data = await getUser();
+
+            if (data && data._id) {
+                setUser(data);
+            }
+        };
+
+        fetchUser();
         fetchData();
     }, [id]);
 
@@ -125,7 +134,7 @@ export default function DescriptionPage({ id }) {
             }, 50);
         }, 500);
     };
-    
+
     const downloadImage = () => {
         if (!showArtifact?.img) return;
 

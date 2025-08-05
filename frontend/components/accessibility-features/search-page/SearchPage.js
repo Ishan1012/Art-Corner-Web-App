@@ -72,7 +72,7 @@ export default function SearchPage({ query }) {
                         artifacts.map((item, index) => (
                             <div key={index} className="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12" >
                                 <div className="card text-center h-100" style={{ overflow: "hidden" }}>
-                                    <img src={'/'+item.img} loading="lazy" className="card-img-top img-fit" alt="Image" onClick={() => readMore(item)} />
+                                    <img src={item.img} loading="lazy" className="card-img-top img-fit" alt="Image" onClick={() => readMore(item)} />
                                     <div className="card-body edit-card-body">
                                         <h5 className="card-title">{item.title}</h5>
                                         <div className="btn-styles text-end fw-normal">
