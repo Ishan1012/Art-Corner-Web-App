@@ -8,11 +8,12 @@ const UserRoutes = require('./router/UserRoutes');
 const CommunityRoutes = require('./router/CommunityRoutes');
 const FeedbackRoutes = require('./router/FeedbackRoutes');
 const NewsletterRoutes = require('./router/NewsletterRoutes');
+const ImageRoutes = require('./router/ImageRoutes');
 
 dotenv.config();
 
 const PORT = 5000;
-const uri = process.env.MONGO_URI;
+const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/artcorner';
 
 app.use(express.json());
 app.use(cors());
@@ -23,6 +24,7 @@ app.use('/api/users', UserRoutes);
 app.use('/api/community', CommunityRoutes);
 app.use('/api/feedback', FeedbackRoutes);
 app.use('/api/newsletter', NewsletterRoutes);
+app.use('/api/image', ImageRoutes);
 
 mongoose.connect(uri, {
     useNewUrlParser: true,

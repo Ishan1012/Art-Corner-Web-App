@@ -1,19 +1,16 @@
 'use client';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Download, ImageIcon, Loader2, AlertCircle, Sparkles } from 'lucide-react';
 import { toast } from 'react-toastify';
-
-// Mock UserService hook - replace with your actual implementation
-const useUserService = () => {
-  return {
-    user: { id: '1', name: 'John Doe', email: 'john@example.com' },
-    isAuthenticated: true,
-  };
-};
+import { Buffer } from 'buffer';
+import { getUser } from '@/services/UserService';
+import { LoadingPage } from '@/components/accessibility-features/loading-page/LoadingPage';
+import generateImage from '@/services/GenerateImageService';
 
 const AIImageGenerator = () => {
-  const { user, isAuthenticated } = useUserService();
+  const [user, setUser] = useState(null);
   const [prompt, setPrompt] = useState('');
+  const [loading, setLoading] = useState(false);
   const [generatedImage, setGeneratedImage] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState('');
@@ -22,9 +19,27 @@ const AIImageGenerator = () => {
 
   const MAX_GENERATIONS_PER_DAY = 3;
 
-  const generateImage = useCallback(async () => {
+  useEffect(() => {
+    const fetchUser = async () => {
+      const data = await getUser();
+
+      if (data && data._id) {
+        setUser(data);
+      }
+      setLoading(false);
+    };
+
+    fetchUser();
+  }, []);
+
+  const handleGenerateImage = async () => {
     if (!prompt.trim()) {
       setError('Please enter a prompt to generate an image');
+      return;
+    }
+
+    if (!user) {
+      setError('Please sign in to generate an image');
       return;
     }
 
@@ -48,34 +63,23 @@ const AIImageGenerator = () => {
         });
       }, 200);
 
-      const response = await fetch('/api/generate-image', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          prompt: prompt,
-          userId: user.id,
-        }),
-      });
-
-      if(isGenerating || generationsToday >= MAX_GENERATIONS_PER_DAY || !prompt.trim()) {
-        toast.error('Generation cancelled or your daily limit has reached');
-      }
+      console.log(user.id, prompt);
+      const data = await generateImage(user.id, prompt);
 
       clearInterval(progressInterval);
       setProgress(100);
 
-      if (!response.ok) {
-        console.log('Failed to generate image');
-        // setError('Failed to generate image. Please try again later.');
+      if (!data || !data.img?.data || !data.contentType) {
+        setError('Failed to generate image. Please try again later.');
+        return;
       }
 
-      const imageUrl = `https://picsum.photos/512/512?random=${Date.now()}`;
+      const base64 = Buffer.from(data.img.data).toString('base64');
+      const imageSrc = `data:${data.contentType};base64,${base64}`;
 
       setGeneratedImage({
-        url: imageUrl,
-        prompt: prompt,
+        img: imageSrc,
+        responseText: data.prompt,
         timestamp: new Date().toISOString(),
       });
 
@@ -87,29 +91,30 @@ const AIImageGenerator = () => {
       setIsGenerating(false);
       setTimeout(() => setProgress(0), 1000);
     }
-  }, [prompt, user.id, generationsToday]);
+  };
 
-  const downloadImage = useCallback(async () => {
-    if (!generatedImage) return;
+
+  const downloadImage = useCallback(() => {
+    if (!generatedImage?.img) return;
 
     try {
-      const response = await fetch(generatedImage.url);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-
       const link = document.createElement('a');
-      link.href = url;
+      link.href = generatedImage.img; // base64 image string
       link.download = `ai-generated-${Date.now()}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
     } catch (err) {
       setError('Failed to download image');
+      console.error('Download error:', err);
     }
   }, [generatedImage]);
 
-  if (!isAuthenticated) {
+  if (loading) {
+    return <LoadingPage />;
+  }
+
+  if (!user) {
     return (
       <div className="d-flex align-items-center justify-content-center vh-100 bg-white text-center">
         <div>
@@ -159,7 +164,7 @@ const AIImageGenerator = () => {
             )}
 
             <button
-              onClick={generateImage}
+              onClick={handleGenerateImage}
               className="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2"
               style={{ backgroundColor: '#ffc107', borderColor: '#ffc107' }}
             >
@@ -202,7 +207,7 @@ const AIImageGenerator = () => {
               {generatedImage ? (
                 <>
                   <img
-                    src={generatedImage.url}
+                    src={generatedImage.img}
                     alt="Generated"
                     className="img-fluid w-100 h-100 object-fit-cover rounded"
                     style={{ objectFit: 'cover' }}
@@ -225,8 +230,8 @@ const AIImageGenerator = () => {
 
             {generatedImage && (
               <div className="bg-light border rounded p-3 mt-3">
-                <h5 className="mb-2">Prompt used:</h5>
-                <p className="fst-italic text-muted">&ldquo;{generatedImage.prompt}&rdquo;</p>
+                <h5 className="mb-2">AI reply:</h5>
+                <p className="fst-italic text-muted">&ldquo;{generatedImage.responseText}&rdquo;</p>
                 <p className="text-muted small mb-0">
                   Generated on {new Date(generatedImage.timestamp).toLocaleString()}
                 </p>

@@ -1,16 +1,14 @@
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 
-const artifactSchema = new mongoose.Schema({
+const imageSchema = mongoose.Schema({
     id: {
         type: String,
         default: uuidv4,
         unique: true
     },
-    title: { type: String, required: true },
-    desc: { type: String, required: true },
     img: {
-        type: mongoose.Schema.Types.Mixed, 
+        type: mongoose.Schema.Types.Mixed,
         required: true,
         validate: {
             validator: function (value) {
@@ -19,13 +17,14 @@ const artifactSchema = new mongoose.Schema({
             message: 'img must be a string or a Buffer',
         },
     },
-    contentType: { type: String, default: "image/png" },
-    like: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    tags: [{ type: String, default: [] }],
+    contentType: { type: String, default: 'image/png' },
+    userid: { type: String, required: true },
+    prompt: { type: String, required: true },
+    responseText: {type: String, default: ''},
 }, {
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
 });
 
-module.exports = mongoose.model('Artifact', artifactSchema);
+module.exports = mongoose.model('Image', imageSchema)

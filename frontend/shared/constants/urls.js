@@ -18,3 +18,4 @@ export const GET_USER_LIST_URL = BASE_URL + `/api/users/getlist/${process.env.AC
 export const POST_ARTIFACTS = ARTIFACTS_URL+"/";
 export const POST_COMMUNITY = COMMUNITY_URL+"/create";
 export const POST_FEEDBACK = BASE_URL + "/api/feedback/";
+export const GENERATE_IMAGE_URL = BASE_URL + "/api/image/generate";

@@ -99,9 +99,9 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    const { _id, title, desc, img, contentType, like, tags } = req.body;
+    const { title, desc, img, contentType, tags } = req.body;
 
-    if (!_id || !title || !desc || !img || !contentType) {
+    if ( !title || !desc || !img || !contentType) {
         return res.status(400).json({
             message: 'Invalid input. All fields are required and cannot be empty.'
         })
@@ -113,7 +113,6 @@ router.post('/', async (req, res) => {
             desc,
             img,
             contentType,
-            like,
             tags
         });
         await artifact.save();

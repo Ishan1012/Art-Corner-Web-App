@@ -129,7 +129,6 @@ router.post('/signup', async (req, res) => {
         }
 
         const dbUser = await User.create(newUser);
-        console.log(dbUser);
 
         const transporter = nodemailer.createTransport({
             service: 'Gmail',
