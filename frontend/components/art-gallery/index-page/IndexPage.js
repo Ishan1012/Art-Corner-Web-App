@@ -1,5 +1,5 @@
 'use client';
-import React, { use, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
 import '@/styles/IndexPage.css';
 import GridOne from './grid-one-content/GridOne';
