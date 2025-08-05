@@ -9,6 +9,7 @@ import { login, signup } from '@/services/UserService';
 export default function LoginPage() {
     const [showLogin, setShowLogin] = useState(true);
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
     const [isVisiblePassword, setIsVisiblePassword] = useState(false);
     const [isVisiblePassword2, setIsVisiblePassword2] = useState(false);
     const [isVisiblePassword3, setIsVisiblePassword3] = useState(false);
@@ -41,6 +42,7 @@ export default function LoginPage() {
 
         try {
             let result;
+            setLoading(true);
 
             if (showLogin) {
                 result = await login({
@@ -49,11 +51,13 @@ export default function LoginPage() {
                 })
 
                 if (!result || !result._id) {
-                    toast.error("Login failed: "+result);
+                    toast.error("Login failed: " + result);
+                    setLoading(false);
                     return;
                 }
 
                 toast.success(`Login successful \n You are signed in as ${result.username}`);
+                setLoading(false);
                 router.push('/profile');
             }
             else {
@@ -66,14 +70,17 @@ export default function LoginPage() {
 
                 if (!result || !result._id) {
                     toast.error('Signup failed. Please try again.');
+                    setLoading(false);
                     return;
                 }
 
                 toast.success(`Signup successful \n You are signed in as ${result.username}`);
+                setLoading(false);
                 router.push('/profile');
             }
         } catch (err) {
             toast.error("An error occured " + err.message);
+            setLoading(false);
         }
     }
 
@@ -139,7 +146,7 @@ export default function LoginPage() {
                                     </div>
                                     <div className="text"><Link href="/resetpass">Forgot Password?</Link></div>
                                     <div className="button2 input-box">
-                                        <input type="submit" value="Submit" />
+                                        <input type="submit" value={loading ? "Submitting...":"Submit"} />
                                     </div>
                                     <div className="text sign-up-text">Don&apos;t have an account? <label onClick={() => setShowLogin(false)}
                                         htmlFor="flip">Create Account</label></div>
@@ -211,7 +218,7 @@ export default function LoginPage() {
                                         ></i>
                                     </div>
                                     <div className="button2 input-box">
-                                        <input type="submit" value="Submit" />
+                                        <input type="submit" value={loading ? "Submitting...":"Submit"} />
                                     </div>
                                     <div className="text sign-up-text">Already have an account? <label onClick={() => setShowLogin(true)}
                                         htmlFor="flip">Login Now</label>
