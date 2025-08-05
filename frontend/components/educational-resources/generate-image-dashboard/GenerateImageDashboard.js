@@ -79,7 +79,7 @@ const AIImageGenerator = () => {
 
       setGeneratedImage({
         img: imageSrc,
-        responseText: data.prompt,
+        responseText: data.responseText,
         timestamp: new Date().toISOString(),
       });
 
