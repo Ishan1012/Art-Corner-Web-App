@@ -138,17 +138,29 @@ export default function DescriptionPage({ id }) {
     const downloadImage = () => {
         if (!showArtifact?.img) return;
 
-        const imagePath = showArtifact.img.startsWith('/')
-            ? showArtifact.img
-            : `/${showArtifact.img}`;
+        const isBase64 = showArtifact.img.startsWith('data:image');
 
+        // Create a download link
         const link = document.createElement('a');
-        link.href = imagePath;
-        link.download = showArtifact.title?.replace(/\s+/g, '_') || 'download';
+
+        if (isBase64) {
+            // Base64 image
+            link.href = showArtifact.img;
+            link.download = `${showArtifact.title?.replace(/\s+/g, '_') || 'download'}.png`;
+        } else {
+            // Static image path like /img/img123.png
+            const imagePath = showArtifact.img.startsWith('/')
+                ? showArtifact.img
+                : `/${showArtifact.img}`;
+            link.href = imagePath;
+            link.download = `${showArtifact.title?.replace(/\s+/g, '_') || 'download'}.png`;
+        }
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     };
+
 
 
     const openImage = (itemId) => {
