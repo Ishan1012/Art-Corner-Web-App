@@ -29,6 +29,10 @@ export default function LoginPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        if(loading) {
+            return;
+        }
 
         if (!showLogin && (formData.name === '' || formData.email === '' || formData.password === '' || formData.confirmPassword === '')) {
             toast.error('Please fill all the details before submitting');
