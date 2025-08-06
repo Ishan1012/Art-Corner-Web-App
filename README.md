@@ -1,4 +1,4 @@
-# 🎨 ArtCornerJS
+# 🎨 ArtCorner
 
 A full-stack AI-powered image generation platform where users can create digital art from text prompts, post their creations (called **artifacts**), explore artwork by others, and download images — all in one seamless experience.
 
