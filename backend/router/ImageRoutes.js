@@ -29,7 +29,7 @@ router.post('/generate', async (req, res) => {
         const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
         const response = await ai.models.generateContent({
-            model: "gemini-2.0-flash-preview-image-generation",
+            model: "imagen-4.0-generate-001",
             contents: prompt,
             config: {
                 responseModalities: [Modality.TEXT, Modality.IMAGE],
