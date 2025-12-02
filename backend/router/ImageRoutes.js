@@ -1,4 +1,3 @@
-const { GoogleGenAI, Modality } = require("@google/genai");
 const express = require('express')
 const router = express.Router()
 const Image = require('../model/Image')
@@ -19,47 +18,88 @@ router.post('/generate', async (req, res) => {
 
     try {
         const user = await User.findOne({ id: userid });
-        
+
         if (!user) {
             return res.status(403).json({
                 message: 'unauthorized access. Please sign in to access this feature'
             })
         }
 
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        if (!process.env.HF_TOKEN) {
+            return res.status(500).json({ message: 'HF_TOKEN not configured on server.' });
+        }
 
-        const response = await ai.models.generateContent({
-            model: "gemini-2.0-flash-preview-image-generation",
-            contents: prompt,
-            config: {
-                responseModalities: [Modality.TEXT, Modality.IMAGE],
+        const HF_URL = process.env.HF_IMAGE_ENDPOINT || "https://router.huggingface.co/wavespeed/api/v3/wavespeed-ai/z-image/turbo";
+
+        const payload = {
+            inputs: prompt
+        };
+
+        const hfResponse = await fetch(HF_URL, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${process.env.HF_TOKEN}`,
+                "Content-Type": "application/json",
+                "Accept": "*/*"
             },
+            body: JSON.stringify(payload),
         });
 
-        let responseText = undefined;
-
-        for (const part of response.candidates[0].content.parts) {
-            if (part.text) {
-                responseText = part.text;
-            } else if (part.inlineData) {
-                const imageData = part.inlineData.data;
-                const contentType = part.inlineData.mimeType;
-                const buffer = Buffer.from(imageData, "base64");
-
-                const newImage = new Image({
-                    img: buffer,
-                    ...(contentType && { contentType }),
-                    userid,
-                    prompt,
-                    responseText
-                })
-
-                const dbImage = await newImage.save();
-                res.status(200).json(generateTokenResponse(dbImage));
-            }
+        if (!hfResponse.ok) {
+            let errText = hfResponse.statusText;
+            try {
+                const errJson = await hfResponse.json();
+                errText = errJson.error || JSON.stringify(errJson);
+            } catch (_) {}
+            throw new Error(`HuggingFace API error: ${hfResponse.status} ${errText}`);
         }
+
+        const contentType = hfResponse.headers.get('content-type') || '';
+
+        let imageBuffer;
+        let detectedContentType = contentType;
+
+        if (contentType.includes('application/json')) {
+            const json = await hfResponse.json();
+            const base64 =
+                json.image_base64 ||
+                json.image ||
+                (Array.isArray(json) && json[0]?.image_base64) ||
+                (json[0] && json[0].base64) ||
+                json.data?.[0]?.b64_json ||
+                json.generated_images?.[0];
+
+            if (!base64) {
+                throw new Error('Unexpected JSON response from Hugging Face: no image data found.');
+            }
+
+            const base64Str = typeof base64 === 'string' ? base64 : (base64.b64 || base64.base64 || base64.b64_json || base64.data);
+            if (!base64Str || typeof base64Str !== 'string') {
+                throw new Error('Unable to extract base64 image string from HF JSON response.');
+            }
+
+            imageBuffer = Buffer.from(base64Str, 'base64');
+            detectedContentType = json.content_type || 'image/png';
+        } else {
+            const arrayBuffer = await hfResponse.arrayBuffer();
+            imageBuffer = Buffer.from(arrayBuffer);
+            if (!detectedContentType) detectedContentType = 'image/png';
+        }
+
+        const newImage = new Image({
+            img: imageBuffer,
+            ...(detectedContentType && { contentType: detectedContentType }),
+            userid,
+            prompt,
+            responseText: undefined
+        });
+
+        const dbImage = await newImage.save();
+
+        return res.status(200).json(generateTokenResponse(dbImage));
+
     } catch (err) {
-        res.status(500).json({ message: 'Error generating image: ' + err.message });
+        return res.status(500).json({ message: 'Error generating image: ' + err.message });
     }
 })
 
