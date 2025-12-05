@@ -31,10 +31,7 @@ router.post('/generate', async (req, res) => {
         }
 
         // Use HuggingFace InferenceClient
-        const client = new InferenceClient(
-            provider = "nebius",
-            api_key = os.environ["HF_TOKEN"],
-        );
+        const client = new InferenceClient(process.env.HF_TOKEN);
 
         // Call the textToImage method
         const imageBlob = await client.textToImage({
