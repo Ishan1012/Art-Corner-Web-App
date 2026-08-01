@@ -14,7 +14,7 @@ export class CommunityRepository {
   }
 
   async findAll(): Promise<ICommunityDocument[]> {
-    return await Community.find();
+    return await Community.find().sort({ name: 1 }).collation({ locale: 'en', numericOrdering: true });
   }
 
   async createCommunity(communityData: Partial<ICommunity>): Promise<ICommunityDocument> {

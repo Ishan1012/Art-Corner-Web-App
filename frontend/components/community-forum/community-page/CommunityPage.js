@@ -22,7 +22,11 @@ export default function CommunityPage() {
                 return;
             }
             
-            setCommunities(data);
+            const sortedData = [...data].sort((a, b) =>
+                (a.name || '').localeCompare(b.name || '', undefined, { numeric: true, sensitivity: 'base' })
+            );
+            
+            setCommunities(sortedData);
             setLoading(false);
         };
 
