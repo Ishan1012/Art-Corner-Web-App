@@ -9,10 +9,11 @@
     max-width: 850px;
     width: 100%;
     background: #fff;
-    padding: 40px 30px;
+    padding: 25px 30px;
     box-shadow: 0.5px 10px rgba(0, 0, 0, 0.2),11px 0.5px rgba(0, 0, 0, 0.2);
     perspective: 2700px;
 }
+
 .edit-container2 .cover
 {
     position: absolute;
@@ -157,16 +158,16 @@ form .signup-form .title:before
 
 .form .form-content .input-boxes
 {
-    margin-top: 30px;
+    margin-top: 15px;
 }
 
 form .form-content .input-box
 {
     display: flex;
     align-items: center;
-    height: 50px;
+    height: 44px;
     width: 100%;
-    margin: 10px 0;
+    margin: 6px 0;
     position: relative;
 }
 
@@ -177,7 +178,7 @@ form .form-content .input-box
     outline: none;
     border: none;
     padding: 0px 30px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
     border-bottom: 2px solid rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
@@ -197,7 +198,7 @@ form .form-content .input-box
 
 form .form-content .text
 {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     color: #333;
 }
@@ -216,7 +217,7 @@ form .form-content .text a:hover
 form .form-content .button2
 {
     color: #fff;
-    margin-top: 40px;
+    margin-top: 15px;
 }
 
 form .form-content .button2 input
@@ -250,7 +251,7 @@ form .form-content .login-text,
 form .form-content .sign-up-text
 {
     text-align: center;
-    margin-top: 25px;
+    margin-top: 12px;
 }
 
 .edit-container2 #flip
@@ -288,9 +289,9 @@ form .form-content .sign-up-text
     display: flex;
     align-items: center;
     text-align: center;
-    margin: 18px 0 14px;
+    margin: 10px 0 8px;
     color: #777;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
 }
 
