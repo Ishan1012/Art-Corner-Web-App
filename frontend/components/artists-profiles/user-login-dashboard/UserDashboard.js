@@ -156,6 +156,7 @@ export default function UserDashboard() {
             const data = logout();
 
             if (data) {
+                setUser(null);
                 toast.info("Logged out");
                 router.push('/');
             } else {

@@ -21,15 +21,29 @@ export function Header({ open, setOpen }) {
     const router = useRouter();
 
     useEffect(() => {
-        const fetchUser = async () => {
-            const data = await getUser();
+        const fetchUser = () => {
+            const data = getUser();
 
-            if (data && data._id) {
+            if (data && (data._id || data.id)) {
                 setUser(data);
+            } else {
+                setUser(null);
             }
         };
 
         fetchUser();
+
+        const handleUserChange = () => {
+            fetchUser();
+        };
+
+        window.addEventListener('userStateChange', handleUserChange);
+        window.addEventListener('storage', handleUserChange);
+
+        return () => {
+            window.removeEventListener('userStateChange', handleUserChange);
+            window.removeEventListener('storage', handleUserChange);
+        };
     }, []);
 
     const handleSearch = (e) => {
@@ -44,6 +58,7 @@ export function Header({ open, setOpen }) {
             const data = logout();
 
             if (data) {
+                setUser(null);
                 toast.info("Logged out");
                 router.push('/');
             } else {

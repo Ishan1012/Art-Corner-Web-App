@@ -145,6 +145,10 @@ export function logout() {
 
     try {
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        if (typeof window !== 'undefined') {
+            window.dispatchEvent(new Event('userStateChange'));
+        }
         return true;
     } catch (err) {
         console.error('Error removing user from localStorage:', err);
@@ -157,6 +161,9 @@ export function saveUser(user) {
 
     try {
         localStorage.setItem('user', JSON.stringify(user));
+        if (typeof window !== 'undefined') {
+            window.dispatchEvent(new Event('userStateChange'));
+        }
     } catch (err) {
         console.error('Error saving user to localStorage:', err);
     }
