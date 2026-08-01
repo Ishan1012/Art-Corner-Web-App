@@ -182,7 +182,7 @@ export default function LoginPage() {
                                              theme="filled_blue"
                                              shape="pill"
                                              text="signin_with"
-                                             width="100%"
+                                             width="320"
                                          />
                                      </div>
                                      <div className="text sign-up-text">Don&apos;t have an account? <label onClick={() => setShowLogin(false)}
@@ -267,7 +267,7 @@ export default function LoginPage() {
                                              theme="filled_blue"
                                              shape="pill"
                                              text="signup_with"
-                                             width="100%"
+                                             width="320"
                                          />
                                      </div>
                                     <div className="text sign-up-text">Already have an account? <label onClick={() => setShowLogin(true)}
