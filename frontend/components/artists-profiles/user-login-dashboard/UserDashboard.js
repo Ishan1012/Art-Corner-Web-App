@@ -42,8 +42,8 @@ export default function UserDashboard() {
         return <LoadingPage />;
     }
 
-    if (user.isAdmin) {
-        return <AdminDashboard />;
+    if (user && user.isAdmin) {
+        return <AdminDashboard user={user} />;
     }
 
     const handleTagKeyDown = (e) => {
