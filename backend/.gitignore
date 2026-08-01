@@ -1,4 +1,8 @@
 node_modules
 src/uploads
 *.json
-uploadData/*.html
+uploadData
+.env
+dist
+.agents
+.idea

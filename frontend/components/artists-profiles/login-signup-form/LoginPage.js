@@ -4,7 +4,8 @@ import '@/styles/LoginPage.css';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { login, signup } from '@/services/UserService';
+import { login, signup, googleLogin } from '@/services/UserService';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function LoginPage() {
     const [showLogin, setShowLogin] = useState(true);
@@ -19,6 +20,25 @@ export default function LoginPage() {
         password: '',
         confirmPassword: ''
     });
+
+    const handleGoogleSuccess = async (credentialResponse) => {
+        try {
+            setLoading(true);
+            const user = await googleLogin(credentialResponse.credential);
+            setLoading(false);
+            if (user) {
+                toast.success(`Google Sign-In successful!\nWelcome ${user.username || user.email}`);
+                router.push('/profile');
+            }
+        } catch (err) {
+            setLoading(false);
+            toast.error('Google Sign-In error: ' + (err.message || err));
+        }
+    };
+
+    const handleGoogleError = () => {
+        toast.error('Google Sign-In was unsuccessful. Please try again.');
+    };
 
     const handleChange = (e) => {
         setFormData(prev => ({
@@ -149,81 +169,107 @@ export default function LoginPage() {
                                         ></i>
                                     </div>
                                     <div className="text"><Link href="/resetpass">Forgot Password?</Link></div>
-                                    <div className="button2 input-box">
-                                        <input type="submit" value={loading ? "Submitting...":"Submit"} />
-                                    </div>
-                                    <div className="text sign-up-text">Don&apos;t have an account? <label onClick={() => setShowLogin(false)}
-                                        htmlFor="flip">Create Account</label></div>
-                                </div>
-                            </div>
+                                     <div className="button2 input-box">
+                                         <input type="submit" value={loading ? "Submitting...":"Submit"} />
+                                     </div>
+                                     <div className="login-divider">
+                                         <span>OR</span>
+                                     </div>
+                                     <div className="google-btn-wrapper">
+                                         <GoogleLogin
+                                             onSuccess={handleGoogleSuccess}
+                                             onError={handleGoogleError}
+                                             theme="filled_blue"
+                                             shape="pill"
+                                             text="signin_with"
+                                             width="100%"
+                                         />
+                                     </div>
+                                     <div className="text sign-up-text">Don&apos;t have an account? <label onClick={() => setShowLogin(false)}
+                                         htmlFor="flip">Create Account</label></div>
+                                 </div>
+                             </div>
 
-                            {/* Signup Form  */}
-                            <div className="signup-form">
-                                <div className="title">Sign up</div>
-                                <div className="input-boxes">
-                                    <div className="input-box">
-                                        <i className="bi bi-person-fill"></i>
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            placeholder="Enter Your Name"
-                                            value={formData.name}
-                                            onChange={handleChange}
-                                        />
-                                    </div>
-                                    <div className="input-box">
-                                        <i className="bi bi-envelope-at-fill"></i>
-                                        <input
-                                            type="text"
-                                            name="email"
-                                            placeholder="Enter Your E-mail"
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                        />
-                                    </div>
-                                    <div className="input-box">
-                                        <i className="bi bi-key-fill"></i>
-                                        <input
-                                            type={isVisiblePassword2 ? "text" : "password"}
-                                            name="password"
-                                            placeholder="Enter Your Password"
-                                            value={formData.password}
-                                            onChange={handleChange}
-                                        />
-                                        <i
-                                            className={`bi ${isVisiblePassword2 ? "bi-eye-slash-fill" : "bi-eye-fill"} position-absolute`}
-                                            style={{
-                                                right: "10px",
-                                                top: "50%",
-                                                transform: "translateY(-50%)",
-                                                cursor: "pointer"
-                                            }}
-                                            onClick={() => setIsVisiblePassword2(!isVisiblePassword2)}
-                                        ></i>
-                                    </div>
-                                    <div className="input-box">
-                                        <i className="bi bi-shield-lock-fill"></i>
-                                        <input
-                                            type={isVisiblePassword3 ? "text" : "password"}
-                                            name="confirmPassword"
-                                            placeholder="Confirm Your Password"
-                                            value={formData.confirmPassword}
-                                            onChange={handleChange}
-                                        />
-                                        <i
-                                            className={`bi ${isVisiblePassword3 ? "bi-eye-slash-fill" : "bi-eye-fill"} position-absolute`}
-                                            style={{
-                                                right: "10px",
-                                                top: "50%",
-                                                transform: "translateY(-50%)",
-                                                cursor: "pointer"
-                                            }}
-                                            onClick={() => setIsVisiblePassword3(!isVisiblePassword3)}
-                                        ></i>
-                                    </div>
-                                    <div className="button2 input-box">
-                                        <input type="submit" value={loading ? "Submitting...":"Submit"} />
-                                    </div>
+                             {/* Signup Form  */}
+                             <div className="signup-form">
+                                 <div className="title">Sign up</div>
+                                 <div className="input-boxes">
+                                     <div className="input-box">
+                                         <i className="bi bi-person-fill"></i>
+                                         <input
+                                             type="text"
+                                             name="name"
+                                             placeholder="Enter Your Name"
+                                             value={formData.name}
+                                             onChange={handleChange}
+                                         />
+                                     </div>
+                                     <div className="input-box">
+                                         <i className="bi bi-envelope-at-fill"></i>
+                                         <input
+                                             type="text"
+                                             name="email"
+                                             placeholder="Enter Your E-mail"
+                                             value={formData.email}
+                                             onChange={handleChange}
+                                         />
+                                     </div>
+                                     <div className="input-box">
+                                         <i className="bi bi-key-fill"></i>
+                                         <input
+                                             type={isVisiblePassword2 ? "text" : "password"}
+                                             name="password"
+                                             placeholder="Enter Your Password"
+                                             value={formData.password}
+                                             onChange={handleChange}
+                                         />
+                                         <i
+                                             className={`bi ${isVisiblePassword2 ? "bi-eye-slash-fill" : "bi-eye-fill"} position-absolute`}
+                                             style={{
+                                                 right: "10px",
+                                                 top: "50%",
+                                                 transform: "translateY(-50%)",
+                                                 cursor: "pointer"
+                                             }}
+                                             onClick={() => setIsVisiblePassword2(!isVisiblePassword2)}
+                                         ></i>
+                                     </div>
+                                     <div className="input-box">
+                                         <i className="bi bi-shield-lock-fill"></i>
+                                         <input
+                                             type={isVisiblePassword3 ? "text" : "password"}
+                                             name="confirmPassword"
+                                             placeholder="Confirm Your Password"
+                                             value={formData.confirmPassword}
+                                             onChange={handleChange}
+                                         />
+                                         <i
+                                             className={`bi ${isVisiblePassword3 ? "bi-eye-slash-fill" : "bi-eye-fill"} position-absolute`}
+                                             style={{
+                                                 right: "10px",
+                                                 top: "50%",
+                                                 transform: "translateY(-50%)",
+                                                 cursor: "pointer"
+                                             }}
+                                             onClick={() => setIsVisiblePassword3(!isVisiblePassword3)}
+                                         ></i>
+                                     </div>
+                                     <div className="button2 input-box">
+                                         <input type="submit" value={loading ? "Submitting...":"Submit"} />
+                                     </div>
+                                     <div className="login-divider">
+                                         <span>OR</span>
+                                     </div>
+                                     <div className="google-btn-wrapper">
+                                         <GoogleLogin
+                                             onSuccess={handleGoogleSuccess}
+                                             onError={handleGoogleError}
+                                             theme="filled_blue"
+                                             shape="pill"
+                                             text="signup_with"
+                                             width="100%"
+                                         />
+                                     </div>
                                     <div className="text sign-up-text">Already have an account? <label onClick={() => setShowLogin(true)}
                                         htmlFor="flip">Login Now</label>
                                     </div>

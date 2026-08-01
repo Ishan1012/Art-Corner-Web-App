@@ -12,6 +12,7 @@ export const COMMUNITY_BY_SEARCH_URL = COMMUNITY_URL + "/search/";
 
 export const USER_LOGIN_URL = BASE_URL + "/api/users/login";
 export const USER_REGISTER_URL = BASE_URL + "/api/users/signup";
+export const GOOGLE_LOGIN_URL = BASE_URL + "/api/users/google-login";
 export const GET_USER_LIST_URL = BASE_URL + `/api/users/getlist/${process.env.ACCESS_KEY}`;
 
 
@@ -19,3 +20,6 @@ export const POST_ARTIFACTS = ARTIFACTS_URL+"/upload";
 export const POST_COMMUNITY = COMMUNITY_URL+"/create";
 export const POST_FEEDBACK = BASE_URL + "/api/feedback/";
 export const GENERATE_IMAGE_URL = BASE_URL + "/api/image/generate";
+
+export const POSTS_URL = BASE_URL + "/api/posts";
+export const COMMENTS_URL = BASE_URL + "/api/comments";

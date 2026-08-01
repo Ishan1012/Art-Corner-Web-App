@@ -282,3 +282,40 @@ form .form-content .sign-up-text
         display: none;
     }
 }
+
+/* Google OAuth Full Width & Horizontal Line Divider */
+.login-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 18px 0 14px;
+    color: #777;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.login-divider::before,
+.login-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+}
+
+.login-divider:not(:empty)::before {
+    margin-right: 12px;
+}
+
+.login-divider:not(:empty)::after {
+    margin-left: 12px;
+}
+
+.google-btn-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.google-btn-wrapper > div,
+.google-btn-wrapper iframe {
+    width: 100% !important;
+}

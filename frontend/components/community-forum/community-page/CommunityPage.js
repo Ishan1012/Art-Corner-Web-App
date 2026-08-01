@@ -1,6 +1,6 @@
 'use client';
-import React, { useEffect, useState } from 'react'
-import '@/styles/CommunityPage.css'
+import React, { useEffect, useState } from 'react';
+import '@/styles/CommunityPage.css';
 import getAll, { joinCommunity } from '@/services/CommunityService';
 import { useRouter } from 'next/navigation';
 import { LoadingPage } from '@/components/accessibility-features/loading-page/LoadingPage';
@@ -29,7 +29,7 @@ export default function CommunityPage() {
         const fetchUser = () => {
             const data = getUser();
 
-            if (data && data._id) {
+            if (data && (data._id || data.id)) {
                 setUser(data);
             }
         };
@@ -43,11 +43,11 @@ export default function CommunityPage() {
     }
 
     const getSummary = (description) => {
-        return description.substring(0, 218);
+        return (description || '').substring(0, 218);
     }
 
     const OpenCommunityPage = (item) => {
-        router.push('/community/' + item.id);
+        router.push('/community/' + (item.id || item._id));
     }
 
     const handleJoin = async (itemId) => {
@@ -71,14 +71,14 @@ export default function CommunityPage() {
                 <div className="row g-4 justify-content-center text-center">
                     {
                         communities.map((item, index) => (
-                            <div key={index} className="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
+                            <div key={item.id || item._id || index} className="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
                                 <div className="content2 content2-1 text-center">
                                     <div className="card-body text-center mb-3">
-                                        <img src={item.img} alt={item.name} />
+                                        <img src={item.img || '/profiles/profile1.png'} alt={item.name} />
                                         <h5 className="card-title mt-3 mb-3">{item.name}</h5>
                                         <p className="edit-card-text card-text mb-4">{getSummary(item.description)}</p>
                                         <div className="edit-btn">
-                                            <div onClick={() => handleJoin(item.id)} className="btn btn-outline-primary">Join</div>
+                                            <div onClick={() => handleJoin(item.id || item._id)} className="btn btn-outline-primary">Join</div>
                                             <div onClick={() => OpenCommunityPage(item)} className="btn btn-outline-primary">Visit</div>
                                         </div>
                                     </div>

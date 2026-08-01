@@ -1,4 +1,4 @@
-import { GET_USER_LIST_URL, USER_LOGIN_URL, USER_REGISTER_URL } from "@/shared/constants/urls";
+import { GET_USER_LIST_URL, USER_LOGIN_URL, USER_REGISTER_URL, GOOGLE_LOGIN_URL } from "@/shared/constants/urls";
 import { toast } from "react-toastify";
 
 export async function getAllUsers() {
@@ -102,6 +102,40 @@ export async function signup(userForm) {
         return user;
     } catch (err) {
         toast.error('An error occured: ' + err.message);
+        return null;
+    }
+}
+
+export async function googleLogin(idToken) {
+    if (!idToken) {
+        toast.error('Google ID token is required');
+        return null;
+    }
+
+    try {
+        const response = await fetch(GOOGLE_LOGIN_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ idToken })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.user) {
+            toast.error(data.message || 'Google login failed');
+            return null;
+        }
+
+        const { user, token } = data;
+        if (token && typeof window !== 'undefined') {
+            localStorage.setItem('token', token);
+        }
+        saveUser(user);
+        return user;
+    } catch (err) {
+        toast.error('An error occurred during Google login: ' + err.message);
         return null;
     }
 }

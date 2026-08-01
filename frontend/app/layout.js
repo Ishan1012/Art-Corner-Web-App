@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import GoogleAuthProvider from "@/components/GoogleAuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,8 +30,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-
+        <GoogleAuthProvider>
+          {children}
+        </GoogleAuthProvider>
         <ToastContainer position="bottom-right" autoClose={3000} />
       </body>
     </html>
