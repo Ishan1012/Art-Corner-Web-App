@@ -1,6 +1,6 @@
 node_modules
 src/uploads
-*.json
+src/config/seeds/
 uploadData
 .env
 dist
